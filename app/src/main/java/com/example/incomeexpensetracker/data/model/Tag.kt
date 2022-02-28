@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class Tag(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "icon") val icon: String?
+    @ColumnInfo(name = "icon") val icon: String? = null
 )

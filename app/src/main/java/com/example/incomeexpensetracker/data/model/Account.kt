@@ -9,6 +9,6 @@ data class Account(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "type") val type: String,
-    @ColumnInfo(name = "icon") val icon: String?,
+    @ColumnInfo(name = "icon") val icon: String? = null,
     @ColumnInfo(name = "balance") val balance: String
 )
