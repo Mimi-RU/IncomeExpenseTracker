@@ -86,9 +86,6 @@ object nav_arguments {
     const val account_id = "account_id"
 }
 
-
-
-
 @Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")
