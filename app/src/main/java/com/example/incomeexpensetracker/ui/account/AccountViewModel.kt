@@ -8,6 +8,7 @@ import com.example.incomeexpensetracker.data.model.Account
 import kotlinx.coroutines.launch
 
 class AccountViewModel (private val repository: AccountRepository) : ViewModel() {
+
     val allAccount: LiveData<List<Account>> = repository.allAccount
 
     fun insert(account: Account) = viewModelScope.launch {

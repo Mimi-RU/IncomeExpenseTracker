@@ -17,7 +17,7 @@ fun homeScreen(navHostController: NavHostController) {
 
     Scaffold(
         topBar = { topBarScreen()},
-        bottomBar = { bottomBar()},
+        bottomBar = { homeBottomBar(navHostController = navHostController)},
         floatingActionButton = { homeFloatingActionButton(navHostController = navHostController)}
     ) {
         

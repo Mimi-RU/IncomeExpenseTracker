@@ -1,5 +1,6 @@
 package com.example.incomeexpensetracker
 
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,7 +19,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.incomeexpensetracker.data.repository.AccountRepository
 import com.example.incomeexpensetracker.nav_arguments.account_id
+import com.example.incomeexpensetracker.ui.account.AccountViewModel
+import com.example.incomeexpensetracker.ui.account.accountListScreen
 import com.example.incomeexpensetracker.ui.components.bottomBar
 import com.example.incomeexpensetracker.ui.components.topBarScreen
 import com.example.incomeexpensetracker.ui.home.homeScreen
@@ -61,12 +65,13 @@ private fun IncomeExpenseTrackerApp(){
 
 @Composable
 fun homeDestination(navController: NavHostController){
-    homeScreen(navHostController = navController)
+    accountListScreen(accountViewModel = AccountViewModel(AccountRepository(context = Application())) )
+    // homeScreen(navHostController = navController)
 }
 
 @Composable
 fun accountListDestination(navController: NavHostController) {
-
+ accountListScreen(accountViewModel = AccountViewModel(AccountRepository(context = Application())) )
 }
 
 object nav_routes {
