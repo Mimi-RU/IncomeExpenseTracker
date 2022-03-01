@@ -11,7 +11,9 @@ import com.example.incomeexpensetracker.ui.components.topBarScreen
 import com.example.incomeexpensetracker.ui.home.homeFloatingActionButton
 
 @Composable
-fun accountListScreen(accountViewModel: AccountViewModel) {
+fun accountListScreen() {
+
+    val accountViewModel = AccountViewModel()
 
     val scaffoldState: ScaffoldState = rememberScaffoldState()
 

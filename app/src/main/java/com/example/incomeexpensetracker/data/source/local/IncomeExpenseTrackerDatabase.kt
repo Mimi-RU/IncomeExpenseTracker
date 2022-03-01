@@ -17,23 +17,20 @@ public  abstract class IncomeExpenseTrackerDatabase: RoomDatabase() {
     abstract fun tagDao():TagDao
 
     companion object {
-        // Singleton prevents multiple instances of database opening at the
-        // same time.
         @Volatile
         private var INSTANCE: IncomeExpenseTrackerDatabase? = null
 
         fun getDatabase(context: Context): IncomeExpenseTrackerDatabase {
-            // if the INSTANCE is not null, then return it,
-            // if it is, then create the database
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    IncomeExpenseTrackerDatabase::class.java,
-                    "word_database"
-                ).build()
+            val tempInstance = INSTANCE
+            if (tempInstance != null) {
+                return tempInstance
+            }
+            synchronized(this) {
+                val instance = Room.databaseBuilder(context.applicationContext,
+                    IncomeExpenseTrackerDatabase::class.java, "income_expense_tracker")
+                    .build()
                 INSTANCE = instance
-                // return instance
-                instance
+                return instance
             }
         }
     }

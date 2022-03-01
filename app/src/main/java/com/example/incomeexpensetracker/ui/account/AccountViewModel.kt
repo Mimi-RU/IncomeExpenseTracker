@@ -7,7 +7,9 @@ import com.example.incomeexpensetracker.data.repository.AccountRepository
 import com.example.incomeexpensetracker.data.model.Account
 import kotlinx.coroutines.launch
 
-class AccountViewModel (private val repository: AccountRepository) : ViewModel() {
+class AccountViewModel () : ViewModel() {
+
+    private val repository = AccountRepository()
 
     val allAccount: LiveData<List<Account>> = repository.allAccount
 
@@ -23,11 +25,11 @@ class AccountViewModel (private val repository: AccountRepository) : ViewModel()
 
 }
 
-class WordViewModelFactory(private val repository: AccountRepository) : ViewModelProvider.Factory {
+class WordViewModelFactory() : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AccountViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return AccountViewModel(repository) as T
+            return AccountViewModel() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

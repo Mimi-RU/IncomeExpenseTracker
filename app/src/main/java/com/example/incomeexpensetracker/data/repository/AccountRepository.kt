@@ -6,7 +6,9 @@ import com.example.incomeexpensetracker.data.model.Account
 import com.example.incomeexpensetracker.data.source.local.AccountDao
 import com.example.incomeexpensetracker.data.source.local.IncomeExpenseTrackerDatabase
 
-class AccountRepository  (context: Application) {
+class AccountRepository  () {
+
+    private val context = Application()
 
     private val accountDao: AccountDao =
         IncomeExpenseTrackerDatabase.getDatabase(context).accountDao()

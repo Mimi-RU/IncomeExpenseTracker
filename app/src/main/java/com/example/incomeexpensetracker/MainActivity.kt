@@ -66,13 +66,13 @@ private fun IncomeExpenseTrackerApp(){
 @Composable
 fun homeDestination(navController: NavHostController){
     // Text(text = "Account List")
-//     accountListScreen(accountViewModel = AccountViewModel(AccountRepository(context = Application())) )
-   //  homeScreen(navHostController = navController)
+    // accountListScreen()
+     homeScreen(navHostController = navController)
 }
 
 @Composable
 fun accountListDestination(navController: NavHostController) {
- accountListScreen(accountViewModel = AccountViewModel(AccountRepository(context = Application())) )
+ accountListScreen()
 }
 
 object nav_routes {
