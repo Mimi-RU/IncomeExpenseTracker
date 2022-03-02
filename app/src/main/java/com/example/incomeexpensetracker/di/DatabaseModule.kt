@@ -22,6 +22,8 @@ object DatabaseModule {
         "income_expense_database"
     ).build()
 
+    @Singleton
+    @Provides
     fun provideAccountDao( database: IncomeExpenseTrackerDatabase ) = database.accountDao()
 
 }
