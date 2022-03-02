@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface AccountDao {
      @Query("SELECT * FROM accounts ORDER BY id DESC")
-      fun getAccounts():LiveData <List<Account>>
+      fun getAccounts(): Flow<List<Account>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAccount(account: Account)
