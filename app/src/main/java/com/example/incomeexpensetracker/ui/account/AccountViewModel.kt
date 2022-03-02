@@ -5,32 +5,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.incomeexpensetracker.data.repository.AccountRepository
 import com.example.incomeexpensetracker.data.model.Account
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AccountViewModel () : ViewModel() {
+@HiltViewModel
+class AccountViewModel @Inject constructor (private val accountRepository: AccountRepository) : ViewModel() {
 
-    private val repository = AccountRepository()
+    private  val  _allAccounts = MutableStateFlow<List<Account>>(emptyList())
 
-    val allAccount: LiveData<List<Account>> = repository.allAccount
+    val allAccounts = _allAccounts
 
-    fun insert(account: Account) = viewModelScope.launch {
-        repository.insert(account)
-    }
-    fun update(account: Account) = viewModelScope.launch {
-        repository.update(account)
-    }
-    fun delete(account: Account) = viewModelScope.launch {
-        repository.delete(account)
-    }
-
-}
-
-class WordViewModelFactory() : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(AccountViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return AccountViewModel() as T
+    fun getAllAccounts(){
+        viewModelScope.launch {
+            accountRepository.allAccount.collect() {
+                _allAccounts.value = it
+            }
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
+
 }

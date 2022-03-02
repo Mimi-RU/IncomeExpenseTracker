@@ -1,46 +1,66 @@
 package com.example.incomeexpensetracker.ui.account
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.unit.dp
+import com.example.incomeexpensetracker.data.model.Account
 import com.example.incomeexpensetracker.ui.components.bottomBar
 import com.example.incomeexpensetracker.ui.components.topBarScreen
-import com.example.incomeexpensetracker.ui.home.homeFloatingActionButton
 
 @Composable
-fun accountListScreen() {
-
-    val accountViewModel = AccountViewModel()
+fun accountListScreen(accountViewModel : AccountViewModel) {
 
     val scaffoldState: ScaffoldState = rememberScaffoldState()
 
-    
-    // Text(text = "Account List")
-    
+    LaunchedEffect(key1 = true){
+        accountViewModel.getAllAccounts()
+    }
+
+    val accountStateList = accountViewModel.allAccounts.collectAsState()
+
+    val  accountList = accountStateList.value
+
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = { topBarScreen()},
         bottomBar = { bottomBar() }
     ) {
 
-        accountList(accountViewModel = accountViewModel)
-
+        LazyColumn(
+            contentPadding = PaddingValues(bottom = 16.dp)
+        ) {
+            items(accountList){ item: Account ->
+                accountItem(account = item)
+            }
+        }
     }
 
 }
 
 @Composable
-fun accountList(accountViewModel: AccountViewModel) {
+fun accountItem(account : Account) {
 
-    val list = accountViewModel.allAccount
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = MaterialTheme.colors.background,
+        shape = RectangleShape,
+        elevation = 2.dp
+    ){
 
-    list.value?.forEach() {
-        Column() {
-            Text(text = "$it.name")
+        Column(modifier = Modifier.padding(12.dp)) {
+            Text(text = account.name)
+            Text(text = account.balance)
         }
     }
-}
 
+}

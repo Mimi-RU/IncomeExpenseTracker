@@ -15,11 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.incomeexpensetracker.nav_arguments.account_id
+import com.example.incomeexpensetracker.ui.account.AccountViewModel
 import com.example.incomeexpensetracker.ui.account.accountListScreen
 import com.example.incomeexpensetracker.ui.home.homeScreen
 import com.example.incomeexpensetracker.ui.theme.IncomeExpenseTrackerTheme
@@ -31,13 +33,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             IncomeExpenseTrackerTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    IncomeExpenseTrackerApp()
-                }
+                IncomeExpenseTrackerApp()
             }
         }
     }
@@ -63,14 +59,13 @@ private fun IncomeExpenseTrackerApp(){
 
 @Composable
 fun homeDestination(navController: NavHostController){
-    // Text(text = "Account List")
-    // accountListScreen()
      homeScreen(navHostController = navController)
 }
 
 @Composable
 fun accountListDestination(navController: NavHostController) {
- accountListScreen()
+    val  viewModel : AccountViewModel = hiltViewModel()
+    accountListScreen(viewModel)
 }
 
 object nav_routes {
@@ -83,33 +78,4 @@ object nav_routes {
 
 object nav_arguments {
     const val account_id = "account_id"
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-
-    Card(modifier = Modifier.padding(24.dp)) {
-        Row() {
-
-            Column() {
-                Text(text = "Column One")
-            }
-
-            Column() {
-                Text(text = "Column Two")
-            }
-
-        }
-
-    }
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    IncomeExpenseTrackerTheme {
-        Greeting("Android")
-    }
 }
