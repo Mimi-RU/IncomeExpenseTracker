@@ -3,18 +3,7 @@ package com.example.incomeexpensetracker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -22,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.incomeexpensetracker.nav_arguments.account_id
 import com.example.incomeexpensetracker.ui.account.AccountViewModel
+import com.example.incomeexpensetracker.ui.account.accountAddScreen
 import com.example.incomeexpensetracker.ui.account.accountListScreen
 import com.example.incomeexpensetracker.ui.home.homeScreen
 import com.example.incomeexpensetracker.ui.theme.IncomeExpenseTrackerTheme
@@ -53,6 +43,10 @@ private fun IncomeExpenseTrackerApp(){
         composable(route = nav_routes.account_list){
             accountListDestination(navController)
         }
+
+        composable(route = nav_routes.account_add){
+            accountAddDestination(navController)
+        }
     }
 
 }
@@ -65,8 +59,16 @@ fun homeDestination(navController: NavHostController){
 @Composable
 fun accountListDestination(navController: NavHostController) {
     val  viewModel : AccountViewModel = hiltViewModel()
-    accountListScreen(viewModel)
+    accountListScreen(navHostController = navController, viewModel)
 }
+
+
+@Composable
+fun accountAddDestination(navController: NavHostController) {
+    val  viewModel : AccountViewModel = hiltViewModel()
+    accountAddScreen(navHostController = navController, viewModel)
+}
+
 
 object nav_routes {
     const val home = "home"
