@@ -1,6 +1,5 @@
 package com.example.incomeexpensetracker.ui.account
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -18,32 +17,31 @@ import javax.inject.Inject
 class AccountViewModel @Inject constructor(private val accountRepository: AccountRepository) :
     ViewModel() {
 
-
     val id: MutableState<Int> = mutableStateOf(0)
     val type: MutableState<String> = mutableStateOf("")
     val name: MutableState<String> = mutableStateOf("")
     val balance: MutableState<String> = mutableStateOf("")
 
-    //    All Accounts
-
+    // << All Accounts
     private val _allAccounts = MutableStateFlow<List<Account>>(emptyList())
 
     val allAccounts = _allAccounts
 
     fun getAllAccounts() {
         viewModelScope.launch {
-            accountRepository.allAccount.collect() {
+            accountRepository.allAccount.collect {
                 _allAccounts.value = it
             }
         }
     }
+    // All Accounts >>
 
     //  << Get Account By Id
-    private  val _selectedAccount = MutableStateFlow<Account?>(null)
+    private val _selectedAccount = MutableStateFlow<Account?>(null)
 
-    val selectedAccount  = _selectedAccount
+    val selectedAccount = _selectedAccount
 
-    fun getAccountById(id : Int){
+    fun getAccountById(id: Int) {
         viewModelScope.launch {
             accountRepository.getAccountById(id).collect { account ->
                 selectedAccount.value = account
@@ -51,8 +49,8 @@ class AccountViewModel @Inject constructor(private val accountRepository: Accoun
         }
     }
 
-    fun updateAccountFields(selectedAccount: Account?){
-        if(selectedAccount != null){
+    fun updateAccountFields(selectedAccount: Account?) {
+        if (selectedAccount != null) {
             id.value = selectedAccount.id
             name.value = selectedAccount.name
             type.value = selectedAccount.type
@@ -66,7 +64,6 @@ class AccountViewModel @Inject constructor(private val accountRepository: Accoun
     }
     // Get Account By Id >>
 
-
     // << Insert
     private suspend fun insertAccount() {
         viewModelScope.launch { Dispatchers.IO }
@@ -76,7 +73,7 @@ class AccountViewModel @Inject constructor(private val accountRepository: Accoun
             type = type.value,
             balance = balance.value
         )
-        accountRepository.insert(account);
+        accountRepository.insert(account)
     }
 
     fun storeAccount() = viewModelScope.launch {
@@ -84,7 +81,7 @@ class AccountViewModel @Inject constructor(private val accountRepository: Accoun
     }
     // Insert >>
 
-    // Update
+    // << Update
     private suspend fun _updateAccount() {
         viewModelScope.launch { Dispatchers.IO }
         val account = Account(
@@ -93,13 +90,15 @@ class AccountViewModel @Inject constructor(private val accountRepository: Accoun
             type = type.value,
             balance = balance.value
         )
-        accountRepository.update(account);
+        accountRepository.update(account)
     }
 
     fun updateAccount() = viewModelScope.launch {
         _updateAccount()
     }
+    // Update >>
 
+    // << Delete
     private suspend fun _deleteAccount() {
         viewModelScope.launch { Dispatchers.IO }
         val account = Account(
@@ -108,15 +107,12 @@ class AccountViewModel @Inject constructor(private val accountRepository: Accoun
             type = type.value,
             balance = balance.value
         )
-        accountRepository.delete(account);
+        accountRepository.delete(account)
     }
 
     fun deleteAccount() = viewModelScope.launch {
         _deleteAccount()
     }
-
-
-
-
+    // Delete >>
 
 }
