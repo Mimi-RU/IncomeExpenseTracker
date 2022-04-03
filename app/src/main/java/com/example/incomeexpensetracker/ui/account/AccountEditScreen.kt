@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -122,6 +123,14 @@ fun accountEditTopBar(navHostController: NavHostController, accountViewModel: Ac
             Text(text = "Edit Account")
         },
         actions = {
+
+            IconButton(onClick = {
+                accountViewModel.deleteAccount()
+                navHostController.navigate(nav_routes.account_list)
+            }) {
+                Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete Account")
+
+            }
 
             IconButton(onClick = {
                 accountViewModel.updateAccount()

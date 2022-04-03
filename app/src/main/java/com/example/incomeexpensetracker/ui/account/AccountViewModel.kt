@@ -100,6 +100,21 @@ class AccountViewModel @Inject constructor(private val accountRepository: Accoun
         _updateAccount()
     }
 
+    private suspend fun _deleteAccount() {
+        viewModelScope.launch { Dispatchers.IO }
+        val account = Account(
+            id = id.value,
+            name = name.value,
+            type = type.value,
+            balance = balance.value
+        )
+        accountRepository.delete(account);
+    }
+
+    fun deleteAccount() = viewModelScope.launch {
+        _deleteAccount()
+    }
+
 
 
 
