@@ -1,6 +1,7 @@
 package com.example.incomeexpensetracker
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.incomeexpensetracker.nav_arguments.account_id
 import com.example.incomeexpensetracker.ui.account.AccountViewModel
 import com.example.incomeexpensetracker.ui.account.accountAddScreen
+import com.example.incomeexpensetracker.ui.account.accountEditScreen
 import com.example.incomeexpensetracker.ui.account.accountListScreen
 import com.example.incomeexpensetracker.ui.home.homeScreen
 import com.example.incomeexpensetracker.ui.theme.IncomeExpenseTrackerTheme
@@ -47,6 +49,11 @@ private fun IncomeExpenseTrackerApp(){
         composable(route = nav_routes.account_add){
             accountAddDestination(navController)
         }
+
+        composable(route = nav_routes.account_edit){
+            val accountId = it.arguments!!.getString("account_id")!!.toInt()
+            accountEditDestination(navController = navController, id = accountId)
+        }
     }
 
 }
@@ -67,6 +74,12 @@ fun accountListDestination(navController: NavHostController) {
 fun accountAddDestination(navController: NavHostController) {
     val  viewModel : AccountViewModel = hiltViewModel()
     accountAddScreen(navHostController = navController, viewModel)
+}
+
+@Composable
+fun accountEditDestination(navController: NavHostController, id: Int) {
+    val  viewModel : AccountViewModel = hiltViewModel()
+    accountEditScreen(navHostController = navController, accountViewModel = viewModel, id = id)
 }
 
 

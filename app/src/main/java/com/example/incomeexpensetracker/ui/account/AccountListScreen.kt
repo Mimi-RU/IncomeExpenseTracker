@@ -1,5 +1,6 @@
 package com.example.incomeexpensetracker.ui.account
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.incomeexpensetracker.data.model.Account
+import com.example.incomeexpensetracker.nav_arguments
 import com.example.incomeexpensetracker.nav_routes
 import com.example.incomeexpensetracker.ui.components.bottomBar
 import com.example.incomeexpensetracker.ui.components.topBarScreen
@@ -54,7 +56,7 @@ fun accountListScreen(navHostController: NavHostController, accountViewModel : A
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
             items(accountList){ item: Account ->
-                accountItem(account = item)
+                accountItem(account = item, navHostController = navHostController)
             }
         }
     }
@@ -70,7 +72,7 @@ fun accountsTopBar(){
 }
 
 @Composable
-fun accountItem(account : Account) {
+fun accountItem(account : Account, navHostController: NavHostController) {
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -79,7 +81,11 @@ fun accountItem(account : Account) {
         elevation = 2.dp
     ){
 
-        Column(modifier = Modifier.padding(12.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(12.dp)
+                .clickable { navHostController.navigate("account_edit/${account.id}") }
+        ) {
             Text(text = account.name)
             Text(text = account.balance)
         }

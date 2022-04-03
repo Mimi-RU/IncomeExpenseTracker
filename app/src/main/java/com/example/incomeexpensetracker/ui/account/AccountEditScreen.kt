@@ -1,5 +1,7 @@
 package com.example.incomeexpensetracker.ui.account
 
+
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,16 +13,33 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.incomeexpensetracker.data.model.Account
 import com.example.incomeexpensetracker.nav_routes
 
 @Composable
-fun accountAddScreen(navHostController: NavHostController, accountViewModel: AccountViewModel) {
+fun accountEditScreen(
+    navHostController: NavHostController,
+    accountViewModel: AccountViewModel,
+    id: Int
+) {
 
     Scaffold(
-        topBar = { accountAddTopBar(navHostController = navHostController, accountViewModel = accountViewModel) }
+        topBar = {
+            accountEditTopBar(
+                navHostController = navHostController,
+                accountViewModel = accountViewModel
+            )
+        }
     ) {
 
+        accountViewModel.getAccountById(id)
+        val account: Account? by accountViewModel.selectedAccount.collectAsState()
+        LaunchedEffect(key1 = account?.id) {
+            accountViewModel.updateAccountFields(account)
+        }
+
         val name: String by accountViewModel.name
+        val type: String by accountViewModel.type
         val balance: String by accountViewModel.balance
 
         Column(
@@ -28,7 +47,7 @@ fun accountAddScreen(navHostController: NavHostController, accountViewModel: Acc
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
-            accountTypeDropDown(accountViewModel = accountViewModel)
+            typeDropDown(accountViewModel = accountViewModel, type = type)
 
             OutlinedTextField(
                 value = name,
@@ -48,12 +67,11 @@ fun accountAddScreen(navHostController: NavHostController, accountViewModel: Acc
 
 
 @Composable
-fun accountTypeDropDown(
-    accountViewModel: AccountViewModel
+fun typeDropDown(
+    accountViewModel: AccountViewModel,
+    type: String
 ) {
     var expanded by remember { mutableStateOf(false) }
-
-    var selectedIndex by remember { mutableStateOf(0) }
 
     val items = listOf("Cash", "Bank", "Card")
 
@@ -68,7 +86,7 @@ fun accountTypeDropDown(
             )
     ) {
 
-        Text(text = items[selectedIndex])
+        Text(text = type)
 
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
 
@@ -76,7 +94,6 @@ fun accountTypeDropDown(
                 DropdownMenuItem(
                     onClick = {
                         expanded = false
-                        selectedIndex = index
                         accountViewModel.type.value = s
                     }
                 ) {
@@ -91,7 +108,7 @@ fun accountTypeDropDown(
 
 
 @Composable
-fun accountAddTopBar(navHostController: NavHostController, accountViewModel: AccountViewModel ) {
+fun accountEditTopBar(navHostController: NavHostController, accountViewModel: AccountViewModel) {
     TopAppBar(
         navigationIcon = {
             IconButton(onClick = { navHostController.navigate(nav_routes.account_list) }) {
@@ -102,15 +119,16 @@ fun accountAddTopBar(navHostController: NavHostController, accountViewModel: Acc
             }
         },
         title = {
-            Text(text = "Add Account")
+            Text(text = "Edit Account")
         },
         actions = {
 
             IconButton(onClick = {
-                accountViewModel.storeAccount()
+                accountViewModel.updateAccount()
                 navHostController.navigate(nav_routes.account_list)
             }) {
-                Icon(imageVector = Icons.Default.Check, contentDescription = "Add Account")
+                Icon(imageVector = Icons.Default.Check, contentDescription = "Save Account")
+
             }
 
         }
