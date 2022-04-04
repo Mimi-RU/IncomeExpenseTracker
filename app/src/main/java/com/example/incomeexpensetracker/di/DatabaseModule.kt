@@ -26,4 +26,24 @@ object DatabaseModule {
     @Provides
     fun provideAccountDao( database: IncomeExpenseTrackerDatabase ) = database.accountDao()
 
+    @Singleton
+    @Provides
+    fun provideCategoryDao( database: IncomeExpenseTrackerDatabase ) = database.categoryDao()
+
+    @Singleton
+    @Provides
+    fun provideExpenseDao( database: IncomeExpenseTrackerDatabase ) = database.expenseDao()
+
+    @Singleton
+    @Provides
+    fun provideIncomeDao( database: IncomeExpenseTrackerDatabase ) = database.incomeDao()
+
+    @Singleton
+    @Provides
+    fun provideNoteDao( database: IncomeExpenseTrackerDatabase ) = database.noteDao()
+
+    @Singleton
+    @Provides
+    fun provideTagDao( database: IncomeExpenseTrackerDatabase ) = database.tagDao()
+
 }
