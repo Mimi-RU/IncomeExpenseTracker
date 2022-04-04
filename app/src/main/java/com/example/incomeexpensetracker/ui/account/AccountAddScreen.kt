@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.incomeexpensetracker.nav_routes
 
-@ExperimentalComposeUiApi
 @Composable
 fun accountAddScreen(navHostController: NavHostController, accountViewModel: AccountViewModel) {
 
@@ -30,8 +29,6 @@ fun accountAddScreen(navHostController: NavHostController, accountViewModel: Acc
 
         val name: String by accountViewModel.name
         val balance: String by accountViewModel.balance
-
-        val kc = LocalSoftwareKeyboardController.current
 
         Column(
             modifier = Modifier
