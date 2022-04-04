@@ -1,7 +1,10 @@
 package com.example.incomeexpensetracker.ui.account
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -13,15 +16,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.incomeexpensetracker.data.model.Account
-import com.example.incomeexpensetracker.nav_arguments
 import com.example.incomeexpensetracker.nav_routes
-import com.example.incomeexpensetracker.ui.components.bottomBar
-import com.example.incomeexpensetracker.ui.components.topBarScreen
 
 @Composable
-fun accountListScreen(navHostController: NavHostController, accountViewModel : AccountViewModel) {
+fun accountListScreen(navHostController: NavHostController) {
+
+    val accountViewModel : AccountViewModel = hiltViewModel()
 
     val scaffoldState: ScaffoldState = rememberScaffoldState()
 

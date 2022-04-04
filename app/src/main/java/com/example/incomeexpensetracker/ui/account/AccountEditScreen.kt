@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.incomeexpensetracker.data.model.Account
 import com.example.incomeexpensetracker.nav_routes
@@ -22,9 +23,10 @@ import com.example.incomeexpensetracker.nav_routes
 @Composable
 fun accountEditScreen(
     navHostController: NavHostController,
-    accountViewModel: AccountViewModel,
     id: Int
 ) {
+
+    val accountViewModel : AccountViewModel = hiltViewModel()
 
     Scaffold(
         topBar = {

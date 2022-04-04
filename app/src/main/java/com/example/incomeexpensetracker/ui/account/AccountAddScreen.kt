@@ -3,25 +3,23 @@ package com.example.incomeexpensetracker.ui.account
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.incomeexpensetracker.nav_routes
 
 @Composable
-fun accountAddScreen(navHostController: NavHostController, accountViewModel: AccountViewModel) {
+fun accountAddScreen(navHostController: NavHostController) {
+
+    val accountViewModel : AccountViewModel = hiltViewModel()
 
     Scaffold(
         topBar = { accountAddTopBar(navHostController = navHostController, accountViewModel = accountViewModel) }
