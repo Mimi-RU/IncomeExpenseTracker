@@ -3,16 +3,24 @@ package com.example.incomeexpensetracker.ui.account
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.incomeexpensetracker.nav_routes
 
+@ExperimentalComposeUiApi
 @Composable
 fun accountAddScreen(navHostController: NavHostController, accountViewModel: AccountViewModel) {
 
@@ -22,6 +30,8 @@ fun accountAddScreen(navHostController: NavHostController, accountViewModel: Acc
 
         val name: String by accountViewModel.name
         val balance: String by accountViewModel.balance
+
+        val kc = LocalSoftwareKeyboardController.current
 
         Column(
             modifier = Modifier
@@ -40,11 +50,15 @@ fun accountAddScreen(navHostController: NavHostController, accountViewModel: Acc
                 value = balance,
                 onValueChange = { accountViewModel.balance.value = it },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = "Initial Balance") }
+                label = { Text(text = "Initial Balance") },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number
+                )
             )
         }
     }
 }
+
 
 
 @Composable
