@@ -16,7 +16,22 @@ import com.example.incomeexpensetracker.nav_arguments.tag_id
 import com.example.incomeexpensetracker.ui.account.accountAddScreen
 import com.example.incomeexpensetracker.ui.account.accountEditScreen
 import com.example.incomeexpensetracker.ui.account.accountListScreen
+import com.example.incomeexpensetracker.ui.category.categoryAddScreen
+import com.example.incomeexpensetracker.ui.category.categoryEditScreen
+import com.example.incomeexpensetracker.ui.category.categoryListScreen
+import com.example.incomeexpensetracker.ui.expense.expenseAddScreen
+import com.example.incomeexpensetracker.ui.expense.expenseEditScreen
+import com.example.incomeexpensetracker.ui.expense.expenseListScreen
 import com.example.incomeexpensetracker.ui.home.homeScreen
+import com.example.incomeexpensetracker.ui.income.incomeAddScreen
+import com.example.incomeexpensetracker.ui.income.incomeEditScreen
+import com.example.incomeexpensetracker.ui.income.incomeListScreen
+import com.example.incomeexpensetracker.ui.note.noteAddScreen
+import com.example.incomeexpensetracker.ui.note.noteEditScreen
+import com.example.incomeexpensetracker.ui.note.noteListScreen
+import com.example.incomeexpensetracker.ui.tag.tagAddScreen
+import com.example.incomeexpensetracker.ui.tag.tagEditScreen
+import com.example.incomeexpensetracker.ui.tag.tagListScreen
 import com.example.incomeexpensetracker.ui.theme.IncomeExpenseTrackerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -56,9 +71,73 @@ private fun IncomeExpenseTrackerApp() {
             accountEditScreen(navHostController = navController, id = accountId)
         }
 
+        composable(route = nav_routes.category_list) {
+            categoryListScreen(navHostController = navController)
+        }
+
+        composable(route = nav_routes.category_add) {
+            categoryAddScreen(navHostController = navController)
+        }
+
+        composable(route = nav_routes.category_edit) {
+            val categoryId = it.arguments!!.getString("category_id")!!.toInt()
+            categoryEditScreen(navHostController = navController, id = categoryId)
+        }
+
+        composable(route = nav_routes.expense_list) {
+            expenseListScreen(navHostController = navController )
+        }
+
+        composable(route = nav_routes.expense_add) {
+            expenseAddScreen(navHostController = navController)
+        }
+
+        composable(route = nav_routes.expense_edit) {
+            val expenseId = it.arguments!!.getString("expense_id")!!.toInt()
+            expenseEditScreen(navHostController = navController, id = expenseId)
+        }
+        composable(route = nav_routes.income_list) {
+            incomeListScreen(navHostController = navController )
+        }
+
+        composable(route = nav_routes.income_add) {
+            incomeAddScreen(navHostController = navController)
+        }
+
+        composable(route = nav_routes.income_edit) {
+            val incomeId = it.arguments!!.getString("income_id")!!.toInt()
+            incomeEditScreen(navHostController = navController, id = incomeId)
+        }
+        composable(route = nav_routes.note_list) {
+            noteListScreen(navHostController = navController )
+        }
+
+        composable(route = nav_routes.note_add) {
+            noteAddScreen(navHostController = navController)
+        }
+
+        composable(route = nav_routes.note_edit) {
+            val noteId = it.arguments!!.getString("note_id")!!.toInt()
+            noteEditScreen(navHostController = navController, id = noteId)
+        }
+        composable(route = nav_routes.tag_list) {
+            tagListScreen(navHostController = navController )
+        }
+
+        composable(route = nav_routes.tag_add) {
+            tagAddScreen(navHostController = navController)
+        }
+
+        composable(route = nav_routes.tag_edit) {
+            val tagId = it.arguments!!.getString("tag_id")!!.toInt()
+            tagEditScreen(navHostController = navController, id = tagId)
+        }
+
+
     }
 
 }
+
 
 
 object nav_routes {
@@ -67,6 +146,7 @@ object nav_routes {
     const val account_add = "account_add"
     const val account_edit = "account_edit/{$account_id}"
 
+    const val income_list = "income_list"
     const val income_add = "income_add"
     const val income_edit = "income_edit/{$income_id}"
 
