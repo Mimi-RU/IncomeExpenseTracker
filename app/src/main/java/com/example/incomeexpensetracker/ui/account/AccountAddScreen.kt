@@ -41,6 +41,7 @@ fun accountAddScreen(navHostController: NavHostController) {
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = "Account Name") }
             )
+
             OutlinedTextField(
                 value = balance,
                 onValueChange = { accountViewModel.balance.value = it },

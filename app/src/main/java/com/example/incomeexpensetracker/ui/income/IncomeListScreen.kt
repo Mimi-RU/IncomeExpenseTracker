@@ -12,9 +12,9 @@ import com.example.incomeexpensetracker.nav_routes
 fun incomeListScreen(navHostController: NavHostController) {
 
     Scaffold(
-        topBar = { topBar(navHostController) },
+        topBar = { incomeListtopBar(navHostController) },
 
-        floatingActionButton = { floatingActionButton(navHostController) }
+        floatingActionButton = { incomeListfloatingActionButton(navHostController) }
     ) {
 
 
@@ -23,7 +23,7 @@ fun incomeListScreen(navHostController: NavHostController) {
 }
 
 @Composable
-fun floatingActionButton(navHostController: NavHostController) {
+fun incomeListfloatingActionButton(navHostController: NavHostController) {
 
     FloatingActionButton(onClick = { navHostController.navigate(nav_routes.income_add) }) {
 
@@ -36,7 +36,7 @@ fun floatingActionButton(navHostController: NavHostController) {
 }
 
 @Composable
-fun topBar(navHostController: NavHostController) {
+fun incomeListtopBar(navHostController: NavHostController) {
     TopAppBar(
         navigationIcon = {
             IconButton(onClick = { navHostController.navigate(nav_routes.home) }) {

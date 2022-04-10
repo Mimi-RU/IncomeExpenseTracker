@@ -4,7 +4,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.incomeexpensetracker.data.model.Account
 import com.example.incomeexpensetracker.data.model.Income
+import com.example.incomeexpensetracker.data.model.Tag
 import com.example.incomeexpensetracker.data.repository.IncomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +21,9 @@ class IncomeViewModel @Inject constructor(private val incomeRepository: IncomeRe
 
     val id: MutableState<Int> = mutableStateOf(0)
     val tag_id: MutableState<Int> = mutableStateOf(0)
+    val  tag : MutableState<Tag?> = mutableStateOf(null)
     val account_id: MutableState<Int> = mutableStateOf(0)
+    val account : MutableState<Account?> = mutableStateOf(null)
     val amount: MutableState<String> = mutableStateOf("")
     val date: MutableState<String> = mutableStateOf("")
     val month: MutableState<String> = mutableStateOf("")
@@ -76,10 +80,12 @@ class IncomeViewModel @Inject constructor(private val incomeRepository: IncomeRe
     // << Insert
     private suspend fun insertIncome() {
         viewModelScope.launch { Dispatchers.IO }
+        //date
+
         val income = Income(
             id = 0,
-            tag_id = tag_id.value ,
-            account_id =   account_id.value,
+            tag_id = tag.value?.id ?: 0,
+            account_id = account.value?.id ?: 0,
             amount = amount.value ,
             date = date.value ,
             month = month.value ,
