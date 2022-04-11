@@ -8,6 +8,7 @@ import com.example.incomeexpensetracker.data.model.Account
 import com.example.incomeexpensetracker.data.model.Income
 import com.example.incomeexpensetracker.data.model.Tag
 import com.example.incomeexpensetracker.data.repository.IncomeRepository
+import com.example.incomeexpensetracker.utils.AppDateTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -80,18 +81,19 @@ class IncomeViewModel @Inject constructor(private val incomeRepository: IncomeRe
     // << Insert
     private suspend fun insertIncome() {
         viewModelScope.launch { Dispatchers.IO }
-        //date
+        //date time
+        val appDateTime = AppDateTime()
 
         val income = Income(
             id = 0,
             tag_id = tag.value?.id ?: 0,
             account_id = account.value?.id ?: 0,
             amount = amount.value ,
-            date = date.value ,
-            month = month.value ,
-            year =  year.value
+            date = appDateTime.date ,
+            month = appDateTime.month ,
+            year =  appDateTime.year
         )
-        incomeRepository.insert(income)
+         incomeRepository.insert(income)
     }
 
     fun storeIncome() = viewModelScope.launch {

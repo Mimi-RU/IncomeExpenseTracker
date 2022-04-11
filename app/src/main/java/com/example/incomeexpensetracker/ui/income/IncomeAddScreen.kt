@@ -47,7 +47,12 @@ fun incomeAddScreen(navHostController: NavHostController) {
 
 
     Scaffold(
-        topBar = { incomeAddTopBar(navHostController, incomeViewModel = incomeViewModel) }
+        topBar = {
+            incomeAddTopBar(
+                navHostController,
+                incomeViewModel = incomeViewModel
+            )
+        }
     ) {
 
         Column(
