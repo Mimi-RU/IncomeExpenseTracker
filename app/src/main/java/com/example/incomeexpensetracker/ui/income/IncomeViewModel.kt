@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.incomeexpensetracker.data.model.Account
 import com.example.incomeexpensetracker.data.model.Income
+import com.example.incomeexpensetracker.data.model.IncomeWithRelations
 import com.example.incomeexpensetracker.data.model.Tag
 import com.example.incomeexpensetracker.data.repository.IncomeRepository
 import com.example.incomeexpensetracker.utils.AppDateTime
@@ -39,6 +40,20 @@ class IncomeViewModel @Inject constructor(private val incomeRepository: IncomeRe
         viewModelScope.launch {
             incomeRepository.allIncome.collect {
                 _allIncomes.value = it
+            }
+        }
+    }
+    // All Incomes >>
+
+    // << All Incomes
+    private val _allIncomesWithRelations = MutableStateFlow<List<IncomeWithRelations>>(emptyList())
+
+    val allIncomesWithRelations = _allIncomesWithRelations
+
+    fun getAllIncomesWithRelations() {
+        viewModelScope.launch {
+            incomeRepository.allIncomeWithRelations.collect {
+                _allIncomesWithRelations.value = it
             }
         }
     }
