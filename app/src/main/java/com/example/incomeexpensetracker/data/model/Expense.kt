@@ -1,4 +1,5 @@
 package com.example.incomeexpensetracker.data.model
+
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -15,7 +16,12 @@ import androidx.room.PrimaryKey
             ),
             onDelete = CASCADE,
         ),
-    ForeignKey(entity = Account::class, parentColumns = arrayOf("id"), childColumns = arrayOf("account_id"), onDelete = CASCADE)
+        ForeignKey(
+            entity = Account::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("account_id"),
+            onDelete = CASCADE
+        )
     ]
 )
 data class Expense(
@@ -24,6 +30,6 @@ data class Expense(
     @ColumnInfo(name = "account_id") val account_id: Int,
     @ColumnInfo(name = "amount") val amount: String,
     @ColumnInfo(name = "date") val date: String,
-    @ColumnInfo(name = "month") val month:String,
-    @ColumnInfo(name = "year") val year:String
+    @ColumnInfo(name = "month") val month: String,
+    @ColumnInfo(name = "year") val year: String
 )
