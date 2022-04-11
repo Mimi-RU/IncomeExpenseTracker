@@ -1,19 +1,15 @@
 package com.example.incomeexpensetracker.data.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import androidx.room.ForeignKey.Companion.CASCADE
-import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "expenses",
     foreignKeys = [
         ForeignKey(
-            entity = Category::class, parentColumns = arrayOf("id"),
-            childColumns = arrayOf(
-                "category_id",
-            ),
+            entity = Category::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("category_id"),
             onDelete = CASCADE,
         ),
         ForeignKey(
@@ -33,3 +29,19 @@ data class Expense(
     @ColumnInfo(name = "month") val month: String,
     @ColumnInfo(name = "year") val year: String
 )
+
+data class ExpenseWithRelation(
+    @Embedded
+    val expense: Expense,
+    @Relation(
+        parentColumn = "category_id",
+        entityColumn = "id"
+    )
+    val category: Category,
+    @Relation(
+        parentColumn = "account_id",
+        entityColumn = "id"
+    )
+    val account: Account
+)
+

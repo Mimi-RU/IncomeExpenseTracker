@@ -4,8 +4,12 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.incomeexpensetracker.data.model.Account
+import com.example.incomeexpensetracker.data.model.Category
 import com.example.incomeexpensetracker.data.model.Expense
+import com.example.incomeexpensetracker.data.model.ExpenseWithRelation
 import com.example.incomeexpensetracker.data.repository.ExpenseRepository
+import com.example.incomeexpensetracker.utils.AppDateTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,14 +23,16 @@ class ExpenseViewModel @Inject constructor(private val expenseRepository: Expens
 
     val id: MutableState<Int> = mutableStateOf(0)
     val category_id: MutableState<Int> = mutableStateOf(0)
+    val category: MutableState<Category?> = mutableStateOf(null)
     val account_id: MutableState<Int> = mutableStateOf(0)
+    val account: MutableState<Account?> = mutableStateOf(null)
     val amount: MutableState<String> = mutableStateOf("")
     val date: MutableState<String> = mutableStateOf("")
     val month: MutableState<String> = mutableStateOf("")
     val year: MutableState<String> = mutableStateOf("")
 
     // << All Expenses
-    private val _allExpenses = MutableStateFlow<List<Expense>>(emptyList())
+    private val _allExpenses = MutableStateFlow<List<ExpenseWithRelation>>(emptyList())
 
     val allExpense = _allExpenses
 
@@ -76,15 +82,15 @@ class ExpenseViewModel @Inject constructor(private val expenseRepository: Expens
     // << Insert
     private suspend fun insertExpense() {
         viewModelScope.launch { Dispatchers.IO }
+        var appDateTime = AppDateTime()
         val expense = Expense(
             id = 0,
-            category_id = category_id.value,
-            account_id = account_id.value ,
+            category_id = category.value?.id ?: 0,
+            account_id = account.value?.id ?: 0,
             amount = amount.value ,
-            date = date.value ,
-            month = month.value ,
-            year = year.value
-
+            date = appDateTime.date ,
+            month = appDateTime.month,
+            year = appDateTime.year
         )
         expenseRepository.insert(expense)
     }

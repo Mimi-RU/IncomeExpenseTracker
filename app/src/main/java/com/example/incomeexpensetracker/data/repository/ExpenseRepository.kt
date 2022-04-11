@@ -1,6 +1,7 @@
 package com.example.incomeexpensetracker.data.repository
 
 import com.example.incomeexpensetracker.data.model.Expense
+import com.example.incomeexpensetracker.data.model.ExpenseWithRelation
 import com.example.incomeexpensetracker.data.source.local.ExpenseDao
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +11,7 @@ import javax.inject.Inject
 
 class ExpenseRepository @Inject constructor(private val expenseDao: ExpenseDao) {
 
-    val allExpense: Flow<List<Expense>> = expenseDao.getExpenses()
+    val allExpense: Flow<List<ExpenseWithRelation>> = expenseDao.getExpenses()
 
     suspend fun getExpenseById(id: Int) : Flow<Expense> {
         return expenseDao.getExpenseById(id)

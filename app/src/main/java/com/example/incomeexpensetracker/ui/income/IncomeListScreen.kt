@@ -48,6 +48,7 @@ fun incomeListScreen(navHostController: NavHostController) {
 
 @Composable
 fun incomeItem(income: IncomeWithRelations) {
+
     Row(
         modifier = Modifier.fillMaxWidth()
     ) {

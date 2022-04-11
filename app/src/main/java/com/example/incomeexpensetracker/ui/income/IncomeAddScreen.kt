@@ -14,10 +14,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.incomeexpensetracker.data.model.Account
 import com.example.incomeexpensetracker.data.model.Tag
 import com.example.incomeexpensetracker.nav_routes
 import com.example.incomeexpensetracker.ui.account.AccountViewModel
+import com.example.incomeexpensetracker.ui.components.enterAmount
+import com.example.incomeexpensetracker.ui.components.selectAccount
 import com.example.incomeexpensetracker.ui.tag.TagViewModel
 
 @Composable
@@ -84,74 +85,6 @@ fun incomeAddScreen(navHostController: NavHostController) {
                     incomeViewModel.amount.value = it
                 }
             )
-        }
-    }
-}
-
-
-@Composable
-fun enterAmount(
-    amount: String,
-    onAmountChange: (String) -> Unit
-) {
-    OutlinedTextField(
-        value = amount,
-        onValueChange = { onAmountChange(it) },
-        modifier = Modifier.fillMaxWidth(),
-        label = { Text(text = "Enter Amount") },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Number
-        )
-    )
-}
-
-@Composable
-fun selectAccount(
-    account: Account?,
-    onAccountChange: (Account) -> Unit,
-    accountList: List<Account>,
-    navHostController: NavHostController
-) {
-
-    var expanded by remember { mutableStateOf(false) }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-            .clickable { expanded = true }
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colors.onSurface
-            )
-    ) {
-
-        Text(text = account?.name ?: "Select Account")
-
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-
-            accountList.onEach { account ->
-                DropdownMenuItem(
-                    onClick = {
-                        expanded = false
-                        onAccountChange(account)
-                    }
-                ) {
-
-                    Text(text = account.name)
-
-                }
-            }
-
-            DropdownMenuItem(
-                onClick = {
-                    navHostController.navigate(nav_routes.account_add)
-                }
-            ) {
-
-                Text(text = "Add New Account")
-
-            }
         }
     }
 }

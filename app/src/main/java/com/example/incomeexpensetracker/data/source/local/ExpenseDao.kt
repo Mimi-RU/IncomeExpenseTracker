@@ -2,13 +2,15 @@ package com.example.incomeexpensetracker.data.source.local
 
 import androidx.room.*
 import com.example.incomeexpensetracker.data.model.Expense
+import com.example.incomeexpensetracker.data.model.ExpenseWithRelation
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExpenseDao {
 
+    @Transaction
     @Query("SELECT * FROM expenses ORDER BY id DESC")
-    fun getExpenses(): Flow<List<Expense>>
+    fun getExpenses(): Flow<List<ExpenseWithRelation>>
 
     @Query("SELECT * FROM expenses WHERE id = :id")
     fun getExpenseById(id: Int): Flow<Expense>

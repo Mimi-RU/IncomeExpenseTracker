@@ -1,8 +1,9 @@
 package com.example.incomeexpensetracker.ui.account
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,7 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -25,17 +27,17 @@ import com.example.incomeexpensetracker.nav_routes
 @Composable
 fun accountListScreen(navHostController: NavHostController) {
 
-    val accountViewModel : AccountViewModel = hiltViewModel()
+    val accountViewModel: AccountViewModel = hiltViewModel()
 
     val scaffoldState: ScaffoldState = rememberScaffoldState()
 
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         accountViewModel.getAllAccounts()
     }
 
     val accountStateList = accountViewModel.allAccounts.collectAsState()
 
-    val  accountList = accountStateList.value
+    val accountList = accountStateList.value
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -56,7 +58,7 @@ fun accountListScreen(navHostController: NavHostController) {
         LazyColumn(
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
-            items(accountList){ item: Account ->
+            items(accountList) { item: Account ->
                 accountItem(account = item, navHostController = navHostController)
             }
         }
@@ -84,25 +86,29 @@ fun accountsTopBar(navHostController: NavHostController) {
 
 
 @Composable
-fun accountItem(account : Account, navHostController: NavHostController) {
+fun accountItem(account: Account, navHostController: NavHostController) {
 
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colors.background,
-        shape = RectangleShape,
-        elevation = 2.dp
-    ){
-
-        Column(
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { navHostController.navigate("account_edit/${account.id}") }
+    ) {
+        Text(
+            text = account.name,
             modifier = Modifier
-                .padding(12.dp)
-                .clickable { navHostController.navigate("account_edit/${account.id}") }
-        ) {
+                .weight(0.3f)
+                .border(0.2.dp, Color.Black)
+                .padding(4.dp),
+            textAlign = TextAlign.Center
 
-                Text(text = account.name)
-                Text(text = account.balance)
-
-        }
+        )
+        Text(
+            text = account.balance,
+            modifier = Modifier
+                .weight(0.3f)
+                .border(0.2.dp, Color.Black)
+                .padding(4.dp),
+            textAlign = TextAlign.Center
+        )
     }
-
 }
