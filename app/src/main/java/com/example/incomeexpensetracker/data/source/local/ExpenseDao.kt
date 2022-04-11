@@ -15,6 +15,9 @@ interface ExpenseDao {
     @Query("SELECT * FROM expenses WHERE id = :id")
     fun getExpenseById(id: Int): Flow<Expense>
 
+    @Query("SELECT SUM(amount) as total FROM expenses")
+    fun getTotalExpense() : Float
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExpense(Expense: Expense)
 

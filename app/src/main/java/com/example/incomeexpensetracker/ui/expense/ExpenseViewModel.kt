@@ -1,5 +1,6 @@
 package com.example.incomeexpensetracker.ui.expense
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -78,6 +79,13 @@ class ExpenseViewModel @Inject constructor(private val expenseRepository: Expens
         }
     }
     // Get Expense By Id >>
+
+    private var _totalExpense : Float = 0F;
+    val totalExpense = _totalExpense
+    fun getTotalExpense(){
+       // var text = expenseRepository.getTotalExpense()
+       // Log.d("total_exp", text.toString())
+    }
 
     // << Insert
     private suspend fun insertExpense() {

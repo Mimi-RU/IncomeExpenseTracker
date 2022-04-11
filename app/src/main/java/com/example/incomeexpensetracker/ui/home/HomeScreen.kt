@@ -11,9 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.incomeexpensetracker.nav_routes
 import com.example.incomeexpensetracker.ui.components.topBarScreen
+import com.example.incomeexpensetracker.ui.expense.ExpenseViewModel
 import me.bytebeats.views.charts.pie.PieChart
 import me.bytebeats.views.charts.pie.PieChartData
 import me.bytebeats.views.charts.pie.render.SimpleSliceDrawer
@@ -22,6 +24,12 @@ import me.bytebeats.views.charts.simpleChartAnimation
 @Composable
 fun homeScreen(navHostController: NavHostController) {
 
+    val expenseViewModel : ExpenseViewModel = hiltViewModel()
+
+    expenseViewModel.getTotalExpense()
+    val totalExpense = expenseViewModel.totalExpense
+
+
     Scaffold(
         topBar = { topBarScreen() },
         floatingActionButton = {
@@ -29,12 +37,10 @@ fun homeScreen(navHostController: NavHostController) {
         }
     ) {
 
-
         Column {
 
-
             Row {
-                pieChartView()
+                pieChartView(totalExpense)
 
                 Column(
                     modifier = Modifier.padding(10.dp)
@@ -42,17 +48,17 @@ fun homeScreen(navHostController: NavHostController) {
 
                     Text(
                         text = "Total Expense:",
-                        color = MaterialTheme.colors.error,
+                        color = Color(0xFFC21336.toInt()),
                         modifier = Modifier.padding(5.dp)
                     )
                     Text(
                         text = "Total Income:",
-                        color = MaterialTheme.colors.primary,
+                        color = Color(0xFF347539.toInt()),
                         modifier = Modifier.padding(5.dp)
                     )
                     Text(
                         text = "Total Balance:",
-                        color = MaterialTheme.colors.secondary,
+                        color = Color(0xFF415575.toInt()),
                         modifier = Modifier.padding(5.dp)
                     )
 
@@ -163,21 +169,21 @@ fun homeScreen(navHostController: NavHostController) {
 }
 
 @Composable
-fun pieChartView() {
+fun pieChartView(totalExpense: Float) {
     PieChart(
         pieChartData = PieChartData(
             slices = listOf(
                 PieChartData.Slice(
                     30F,
-                    MaterialTheme.colors.primary
+                    Color(0xFFC21336.toInt())
                 ),
                 PieChartData.Slice(
                     30F,
-                    MaterialTheme.colors.secondary
+                    Color(0xFF347539.toInt())
                 ),
                 PieChartData.Slice(
                     40F,
-                    MaterialTheme.colors.error
+                    Color(0xFF415575.toInt())
                 )
             )
         ),

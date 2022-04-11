@@ -13,6 +13,10 @@ class ExpenseRepository @Inject constructor(private val expenseDao: ExpenseDao) 
 
     val allExpense: Flow<List<ExpenseWithRelation>> = expenseDao.getExpenses()
 
+    fun getTotalExpense() : Float {
+        return expenseDao.getTotalExpense()
+    }
+
     suspend fun getExpenseById(id: Int) : Flow<Expense> {
         return expenseDao.getExpenseById(id)
     }
