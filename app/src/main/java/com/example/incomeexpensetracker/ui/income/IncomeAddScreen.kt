@@ -98,7 +98,7 @@ fun enterAmount(
         value = amount,
         onValueChange = { onAmountChange(it) },
         modifier = Modifier.fillMaxWidth(),
-        label = { Text(text = "Initial Balance") },
+        label = { Text(text = "Enter Amount") },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number
         )

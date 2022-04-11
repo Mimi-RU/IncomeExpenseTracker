@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -38,7 +39,7 @@ fun accountListScreen(navHostController: NavHostController) {
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = { accountsTopBar() },
+        topBar = { accountsTopBar(navHostController) },
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 navHostController.navigate(nav_routes.account_add)
@@ -63,13 +64,24 @@ fun accountListScreen(navHostController: NavHostController) {
 
 }
 
-@Composable
-fun accountsTopBar(){
-    TopAppBar() {
-        Text(text = "Accounts")
 
-    }
+@Composable
+fun accountsTopBar(navHostController: NavHostController) {
+    TopAppBar(
+        navigationIcon = {
+            IconButton(onClick = { navHostController.navigate(nav_routes.home) }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back to Home"
+                )
+            }
+        },
+        title = {
+            Text(text = "Accounts")
+        }
+    )
 }
+
 
 @Composable
 fun accountItem(account : Account, navHostController: NavHostController) {
