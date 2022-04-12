@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.incomeexpensetracker.data.model.Account
+import com.example.incomeexpensetracker.data.model.Category
 import com.example.incomeexpensetracker.data.model.Schedule
 import com.example.incomeexpensetracker.data.model.ScheduleWithRelation
 import com.example.incomeexpensetracker.data.repository.ScheduleRepository
@@ -23,10 +24,12 @@ class ScheduleViewModel @Inject constructor(private val scheduleRepository: Sche
     val id: MutableState<Int> = mutableStateOf(0)
     val type: MutableState<String> = mutableStateOf("")
     val account: MutableState<Account?> = mutableStateOf(null)
+    val category: MutableState<Category?> = mutableStateOf(null)
     val amount: MutableState<String> = mutableStateOf("")
     val intervalUnit: MutableState<String> = mutableStateOf("")
-    val repeat: MutableState<Int> = mutableStateOf(0)
+    val repeat_want: MutableState<Int> = mutableStateOf(0)
     val time: MutableState<String> = mutableStateOf("")
+
 
     // << All Schedules
     private val _allSchedules = MutableStateFlow<List<ScheduleWithRelation>>(emptyList())
@@ -64,9 +67,11 @@ class ScheduleViewModel @Inject constructor(private val scheduleRepository: Sche
             id = 0,
             type = type.value,
             account_id = account.value?.id ?: 0,
+            category_id = category.value?.id ?: 0,
             amount = amount.value,
             interval_unit = intervalUnit.value,
-            repeat = repeat.value,
+            schedule_on = "",
+            repeat_want = repeat_want.value,
             repeat_count = 0,
             time = time.value
         )

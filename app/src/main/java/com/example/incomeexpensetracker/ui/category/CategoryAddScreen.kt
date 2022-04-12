@@ -64,25 +64,25 @@ fun categoryAddTopBar(navHostController: NavHostController, categoryViewModel: C
 
     TopAppBar(
         navigationIcon = {
-            IconButton(onClick = { navHostController.navigate(nav_routes.expense_list) }) {
+            IconButton(onClick = { navHostController.navigate(nav_routes.category_list) }) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back to Expense List"
+                    contentDescription = "Back to Category List"
                 )
             }
         },
         title = {
-            Text(text = "Add Expense Category")
+            Text(text = "Add Category")
         },
         actions = {
 
             IconButton(onClick = {
                 categoryViewModel.storeCategory()
-                navHostController.navigate(nav_routes.expense_add)
+                navHostController.navigate(nav_routes.category_list)
             }) {
                 Icon(
                     imageVector = Icons.Default.Check,
-                    contentDescription = "Save Expense Category"
+                    contentDescription = "Save Category"
                 )
             }
 

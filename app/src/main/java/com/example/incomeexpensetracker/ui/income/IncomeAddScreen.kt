@@ -18,7 +18,6 @@ import com.example.incomeexpensetracker.ui.category.CategoryViewModel
 import com.example.incomeexpensetracker.ui.components.enterAmount
 import com.example.incomeexpensetracker.ui.components.selectAccount
 import com.example.incomeexpensetracker.ui.components.selectCategory
-import com.example.incomeexpensetracker.ui.tag.TagViewModel
 
 @Composable
 fun incomeAddScreen(navHostController: NavHostController) {

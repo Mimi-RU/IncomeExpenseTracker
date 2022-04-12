@@ -27,8 +27,8 @@ data class Schedule(
     @ColumnInfo(name = "category_id") val category_id: Int,
     @ColumnInfo(name = "amount") val amount: String,
     @ColumnInfo(name = "interval_unit") val interval_unit: String,
-    @ColumnInfo(name = "schedule_on") val schedule_on: String,
-    @ColumnInfo(name = "repeat_want") val repeat: Int? = 0,
+    @ColumnInfo(name = "schedule_on") val schedule_on: String? = null,
+    @ColumnInfo(name = "repeat_want") val repeat_want: Int? = 0,
     @ColumnInfo(name = "repeat_count") val repeat_count: Int = 0,
     @ColumnInfo(name = "time") val time: String? = null
 )

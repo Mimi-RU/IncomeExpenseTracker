@@ -37,7 +37,7 @@ fun selectAccount(
             )
     ) {
 
-        Text(text = account?.name ?: "Select Account")
+        Text(text = account?.name ?: "")
 
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
 

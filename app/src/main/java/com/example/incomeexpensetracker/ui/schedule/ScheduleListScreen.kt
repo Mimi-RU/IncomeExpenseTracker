@@ -55,47 +55,45 @@ fun scheduleItemScreen(item: ScheduleWithRelation) {
     Row {
         Card(
             shape = RoundedCornerShape(8.dp),
-            backgroundColor = Color(0xFFA3AB78.toInt()),
+            backgroundColor = Color(0xFFBFBFBF.toInt()),
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth()
         ) {
-            Text(
-                text = "Type",
-                style = MaterialTheme.typography.h5,
-                modifier = Modifier.padding(16.dp)
-            )
+            Column {
 
-            Text(
-                text = "Account",
-                style = MaterialTheme.typography.h5,
-                modifier = Modifier.padding(16.dp)
-            )
 
-            Text(
-                text = "Amount",
-                style = MaterialTheme.typography.h5,
-                modifier = Modifier.padding(16.dp)
-            )
+                Text(
+                    text = "Payment Type : " + item.schedule.type,
+                    style = MaterialTheme.typography.h5,
+                    modifier = Modifier.padding(4.dp)
+                )
 
-            Text(
-                text = "Interval",
-                style = MaterialTheme.typography.h5,
-                modifier = Modifier.padding(16.dp)
-            )
+                Text(
+                    text = "Account : " + item.account.name,
+                    style = MaterialTheme.typography.h5,
+                    modifier = Modifier.padding(4.dp)
+                )
 
-            Text(
-                text = "Repeat",
-                style = MaterialTheme.typography.h5,
-                modifier = Modifier.padding(16.dp)
-            )
+                Text(
+                    text = "Category: " + item.category.name,
+                    style = MaterialTheme.typography.h5,
+                    modifier = Modifier.padding(4.dp)
+                )
 
-            Text(
-                text = "Notice Time",
-                style = MaterialTheme.typography.h5,
-                modifier = Modifier.padding(16.dp)
-            )
+                Text(
+                    text = "Amount: " + item.schedule.amount,
+                    style = MaterialTheme.typography.h5,
+                    modifier = Modifier.padding(4.dp)
+                )
 
+                Text(
+                    text = "Repeats: " + item.schedule.interval_unit,
+                    style = MaterialTheme.typography.h5,
+                    modifier = Modifier.padding(4.dp)
+                )
+
+            }
         }
     }
 

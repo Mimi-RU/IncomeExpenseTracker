@@ -17,22 +17,40 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.incomeexpensetracker.nav_routes
 import com.example.incomeexpensetracker.ui.account.AccountViewModel
-import com.example.incomeexpensetracker.ui.components.selectAccount
+import com.example.incomeexpensetracker.ui.category.CategoryViewModel
+import com.example.incomeexpensetracker.ui.components.*
 
 @Composable
 fun scheduleAddScreen(navHostController: NavHostController) {
 
     val scheduleViewModel: ScheduleViewModel = hiltViewModel()
     val accountViewModel: AccountViewModel = hiltViewModel()
+    val categoryViewModel: CategoryViewModel = hiltViewModel()
 
-    LaunchedEffect(key1 = true ){
+    // < accounts
+    LaunchedEffect(key1 = true) {
         accountViewModel.getAllAccounts()
     }
     val accountStateList = accountViewModel.allAccounts.collectAsState()
     val accountList = accountStateList.value
+    // accounts >>
+
+
+    //<category
+    LaunchedEffect(key1 = true) {
+        categoryViewModel.getAllCategories()
+    }
+    val categoryStateList = categoryViewModel.allCategories.collectAsState()
+    val categoryList = categoryStateList.value
+    //category>
+
 
     val type by scheduleViewModel.type
     val account by scheduleViewModel.account
+    val category by scheduleViewModel.category
+    val amount by scheduleViewModel.amount
+    val intervalUnit by scheduleViewModel.intervalUnit
+    val types = listOf<String>("Income", "Expense")
 
     Scaffold(
         topBar = { scheduleAddTopBar(navHostController, scheduleViewModel) }
@@ -44,14 +62,17 @@ fun scheduleAddScreen(navHostController: NavHostController) {
         ) {
 
             // type
-            selectType(
-                type = type,
-                onTypeChange = {
+            Text(text = "Payment Type")
+            selectItem(
+                item = type,
+                onItemChange = {
                     scheduleViewModel.type.value = it
-                }
+                },
+                itemList = types
             )
 
             // account_id
+            Text(text = "Account")
             selectAccount(
                 account = account,
                 onAccountChange = {
@@ -61,16 +82,39 @@ fun scheduleAddScreen(navHostController: NavHostController) {
                 navHostController = navHostController
             )
 
-            // amount
+            // category_id
+            Text(text = "Category")
+            selectCategory(
+                category = category,
+                onCategoryChange = {
+                    scheduleViewModel.category.value = it
+                },
+                categoryList = categoryList,
+                navHostController = navHostController
+            )
 
+            // amount
+            enterAmount(
+                amount = amount,
+                onAmountChange = {
+                    scheduleViewModel.amount.value = it
+                }
+            )
+
+            // interval_unit
+            val intervals = listOf<String>("Daily", "Weekly", "Monthly", "Yearly")
+            Text(text = "Repeats")
+            selectItem(
+                item = intervalUnit,
+                onItemChange = {
+                    scheduleViewModel.intervalUnit.value = it
+                },
+                itemList = intervals
+            )
         }
     }
 }
 
-@Composable
-fun selectType(type: String, onTypeChange: (String) -> Unit) {
-
-}
 
 @Composable
 fun scheduleAddTopBar(navHostController: NavHostController, scheduleViewModel: ScheduleViewModel) {
