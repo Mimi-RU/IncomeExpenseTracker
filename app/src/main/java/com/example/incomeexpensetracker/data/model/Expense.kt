@@ -20,6 +20,7 @@ import androidx.room.ForeignKey.Companion.CASCADE
         )
     ]
 )
+
 data class Expense(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "category_id") val category_id: Int,

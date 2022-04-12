@@ -13,7 +13,6 @@ import com.example.incomeexpensetracker.nav_arguments.expense_id
 import com.example.incomeexpensetracker.nav_arguments.income_id
 import com.example.incomeexpensetracker.nav_arguments.note_id
 import com.example.incomeexpensetracker.nav_arguments.schedule_id
-import com.example.incomeexpensetracker.nav_arguments.tag_id
 import com.example.incomeexpensetracker.ui.account.accountAddScreen
 import com.example.incomeexpensetracker.ui.account.accountEditScreen
 import com.example.incomeexpensetracker.ui.account.accountListScreen
@@ -33,9 +32,6 @@ import com.example.incomeexpensetracker.ui.note.noteListScreen
 import com.example.incomeexpensetracker.ui.schedule.scheduleAddScreen
 import com.example.incomeexpensetracker.ui.schedule.scheduleEditScreen
 import com.example.incomeexpensetracker.ui.schedule.scheduleListScreen
-import com.example.incomeexpensetracker.ui.tag.tagAddScreen
-import com.example.incomeexpensetracker.ui.tag.tagEditScreen
-import com.example.incomeexpensetracker.ui.tag.tagListScreen
 import com.example.incomeexpensetracker.ui.theme.IncomeExpenseTrackerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -89,7 +85,7 @@ private fun IncomeExpenseTrackerApp() {
         }
 
         composable(route = nav_routes.expense_list) {
-            expenseListScreen(navHostController = navController )
+            expenseListScreen(navHostController = navController)
         }
 
         composable(route = nav_routes.expense_add) {
@@ -101,7 +97,7 @@ private fun IncomeExpenseTrackerApp() {
             expenseEditScreen(navHostController = navController, id = expenseId)
         }
         composable(route = nav_routes.income_list) {
-            incomeListScreen(navHostController = navController )
+            incomeListScreen(navHostController = navController)
         }
 
         composable(route = nav_routes.income_add) {
@@ -113,7 +109,7 @@ private fun IncomeExpenseTrackerApp() {
             incomeEditScreen(navHostController = navController, id = incomeId)
         }
         composable(route = nav_routes.note_list) {
-            noteListScreen(navHostController = navController )
+            noteListScreen(navHostController = navController)
         }
 
         composable(route = nav_routes.note_add) {
@@ -124,21 +120,9 @@ private fun IncomeExpenseTrackerApp() {
             val noteId = it.arguments!!.getString("note_id")!!.toInt()
             noteEditScreen(navHostController = navController, id = noteId)
         }
-        composable(route = nav_routes.tag_list) {
-            tagListScreen(navHostController = navController )
-        }
-
-        composable(route = nav_routes.tag_add) {
-            tagAddScreen(navHostController = navController)
-        }
-
-        composable(route = nav_routes.tag_edit) {
-            val tagId = it.arguments!!.getString("tag_id")!!.toInt()
-            tagEditScreen(navHostController = navController, id = tagId)
-        }
 
         composable(route = nav_routes.schedule_list) {
-            scheduleListScreen(navHostController = navController )
+            scheduleListScreen(navHostController = navController)
         }
 
         composable(route = nav_routes.schedule_add) {
@@ -153,7 +137,6 @@ private fun IncomeExpenseTrackerApp() {
     }
 
 }
-
 
 
 object nav_routes {
@@ -178,10 +161,6 @@ object nav_routes {
     const val note_add = "note_add"
     const val note_edit = "note_edit/{$note_id}"
 
-    const val tag_list = "tag_list"
-    const val tag_add = "tag_add"
-    const val tag_edit = "tag_edit/{$tag_id}"
-
     const val schedule_list = "schedule_list"
     const val schedule_add = "schedule_add"
     const val schedule_edit = "schedule_edit/{$schedule_id}"
@@ -193,6 +172,5 @@ object nav_arguments {
     const val expense_id = "expense_id"
     const val category_id = "category_id"
     const val note_id = "note_id"
-    const val tag_id = "tag_id"
     const val schedule_id = "schedule_id"
 }

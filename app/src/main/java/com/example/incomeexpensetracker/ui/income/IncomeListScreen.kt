@@ -53,7 +53,7 @@ fun incomeItem(income: IncomeWithRelations) {
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = income.tag.name,
+            text = income.category.name,
             modifier = Modifier
                 .weight(0.3f)
                 .border(0.2.dp, Color.Black)

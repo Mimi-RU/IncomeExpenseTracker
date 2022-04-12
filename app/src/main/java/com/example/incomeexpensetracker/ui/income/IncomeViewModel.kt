@@ -5,9 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.incomeexpensetracker.data.model.Account
+import com.example.incomeexpensetracker.data.model.Category
 import com.example.incomeexpensetracker.data.model.Income
 import com.example.incomeexpensetracker.data.model.IncomeWithRelations
-import com.example.incomeexpensetracker.data.model.Tag
 import com.example.incomeexpensetracker.data.repository.IncomeRepository
 import com.example.incomeexpensetracker.utils.AppDateTime
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,14 +22,10 @@ class IncomeViewModel @Inject constructor(private val incomeRepository: IncomeRe
     ViewModel() {
 
     val id: MutableState<Int> = mutableStateOf(0)
-    val tag_id: MutableState<Int> = mutableStateOf(0)
-    val  tag : MutableState<Tag?> = mutableStateOf(null)
-    val account_id: MutableState<Int> = mutableStateOf(0)
+    val category : MutableState<Category?> = mutableStateOf(null)
     val account : MutableState<Account?> = mutableStateOf(null)
     val amount: MutableState<String> = mutableStateOf("")
     val date: MutableState<String> = mutableStateOf("")
-    val month: MutableState<String> = mutableStateOf("")
-    val year: MutableState<String> = mutableStateOf("")
 
     // << All Incomes
     private val _allIncomes = MutableStateFlow<List<Income>>(emptyList())
@@ -71,26 +67,6 @@ class IncomeViewModel @Inject constructor(private val incomeRepository: IncomeRe
             }
         }
     }
-
-    fun updateIncomeFields(selectedIncome: Income?) {
-        if (selectedIncome != null) {
-            id.value = selectedIncome.id
-            tag_id.value = selectedIncome.tag_id
-            account_id.value = selectedIncome.account_id
-            amount.value = selectedIncome.amount
-            date.value = selectedIncome.date
-            month.value = selectedIncome.month
-            year.value = selectedIncome.year
-        } else {
-            id.value = 0
-            tag_id.value = 0
-            account_id.value = 0
-            amount.value = ""
-            date.value = ""
-            month.value = ""
-            year.value = ""
-        }
-    }
     // Get Income By Id >>
 
     // << Insert
@@ -101,7 +77,7 @@ class IncomeViewModel @Inject constructor(private val incomeRepository: IncomeRe
 
         val income = Income(
             id = 0,
-            tag_id = tag.value?.id ?: 0,
+            category_id = category.value?.id ?: 0,
             account_id = account.value?.id ?: 0,
             amount = amount.value ,
             date = appDateTime.date ,
@@ -119,14 +95,15 @@ class IncomeViewModel @Inject constructor(private val incomeRepository: IncomeRe
     // << Update
     private suspend fun _updateIncome() {
         viewModelScope.launch { Dispatchers.IO }
+        val appDateTime = AppDateTime()
         val income = Income(
             id = id.value,
-            tag_id = tag_id.value ,
-            account_id =   account_id.value,
+            category_id = category.value?.id ?: 0,
+            account_id = account.value?.id ?: 0,
             amount = amount.value ,
             date = date.value ,
-            month = month.value ,
-            year =  year.value
+            month = appDateTime.month ,
+            year =  appDateTime.year
         )
         incomeRepository.update(income)
     }
@@ -139,14 +116,15 @@ class IncomeViewModel @Inject constructor(private val incomeRepository: IncomeRe
     // << Delete
     private suspend fun _deleteIncome() {
         viewModelScope.launch { Dispatchers.IO }
+        val appDateTime = AppDateTime()
         val income = Income(
             id = id.value,
-            tag_id = tag_id.value ,
-            account_id =   account_id.value,
+            category_id = category.value?.id ?: 0,
+            account_id = account.value?.id ?: 0,
             amount = amount.value ,
             date = date.value ,
-            month = month.value ,
-            year =  year.value
+            month = appDateTime.month ,
+            year =  appDateTime.year
         )
         incomeRepository.delete(income)
     }

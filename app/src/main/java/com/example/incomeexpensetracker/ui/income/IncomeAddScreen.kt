@@ -3,22 +3,21 @@ package com.example.incomeexpensetracker.ui.income
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.incomeexpensetracker.data.model.Tag
 import com.example.incomeexpensetracker.nav_routes
 import com.example.incomeexpensetracker.ui.account.AccountViewModel
+import com.example.incomeexpensetracker.ui.category.CategoryViewModel
 import com.example.incomeexpensetracker.ui.components.enterAmount
 import com.example.incomeexpensetracker.ui.components.selectAccount
+import com.example.incomeexpensetracker.ui.components.selectCategory
 import com.example.incomeexpensetracker.ui.tag.TagViewModel
 
 @Composable
@@ -26,7 +25,7 @@ fun incomeAddScreen(navHostController: NavHostController) {
 
     val incomeViewModel: IncomeViewModel = hiltViewModel()
     val accountViewModel: AccountViewModel = hiltViewModel()
-    val tagViewModel: TagViewModel = hiltViewModel()
+    val categoryViewModel : CategoryViewModel = hiltViewModel()
 
     // account list
     LaunchedEffect(key1 = true) {
@@ -35,15 +34,15 @@ fun incomeAddScreen(navHostController: NavHostController) {
     val accountStateList = accountViewModel.allAccounts.collectAsState()
     val accountList = accountStateList.value
 
-    // tag list
+    // category list
     LaunchedEffect(key1 = true) {
-        tagViewModel.getAllTags()
+        categoryViewModel.getAllCategories()
     }
-    val tagStateList = tagViewModel.allTags.collectAsState()
-    val tagList = tagStateList.value
+    val categoryStateList = categoryViewModel.allCategories.collectAsState()
+    val categoryList = categoryStateList.value
 
     val account by incomeViewModel.account
-    val tag by incomeViewModel.tag
+    val category by incomeViewModel.category
     val amount by incomeViewModel.amount
 
 
@@ -70,12 +69,12 @@ fun incomeAddScreen(navHostController: NavHostController) {
                 navHostController = navHostController
             )
 
-            selectIncomeSource(
-                tag = tag,
-                onTagChange = {
-                    incomeViewModel.tag.value = it
+            selectCategory(
+                category = category,
+                onCategoryChange = {
+                    incomeViewModel.category.value = it
                 },
-                tagList = tagList,
+                categoryList = categoryList,
                 navHostController = navHostController
             )
 
@@ -85,57 +84,6 @@ fun incomeAddScreen(navHostController: NavHostController) {
                     incomeViewModel.amount.value = it
                 }
             )
-        }
-    }
-}
-
-@Composable
-fun selectIncomeSource(
-    tag: Tag?,
-    onTagChange: (Tag) -> Unit,
-    tagList: List<Tag>,
-    navHostController: NavHostController
-) {
-
-    var expanded by remember { mutableStateOf(false) }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-            .clickable { expanded = true }
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colors.onSurface
-            )
-    ) {
-
-        Text(text = tag?.name ?: "Select Income Source")
-
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-
-            tagList.onEach { tag ->
-                DropdownMenuItem(
-                    onClick = {
-                        expanded = false
-                        onTagChange(tag)
-                    }
-                ) {
-
-                    Text(text = tag.name)
-
-                }
-            }
-
-            DropdownMenuItem(
-                onClick = {
-                    navHostController.navigate(nav_routes.tag_add)
-                }
-            ) {
-
-                Text(text = "Add New Tag")
-
-            }
         }
     }
 }

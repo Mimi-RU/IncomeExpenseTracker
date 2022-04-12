@@ -6,18 +6,16 @@ import androidx.room.ForeignKey.Companion.CASCADE
 @Entity(
     tableName = "incomes",
     foreignKeys = [
-        androidx.room.ForeignKey(
-            entity = Tag::class,
-            parentColumns = kotlin.arrayOf("id"),
-            childColumns = kotlin.arrayOf(
-                "tag_id",
-            ),
+        ForeignKey(
+            entity = Category::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("category_id"),
             onDelete = CASCADE,
         ),
-        androidx.room.ForeignKey(
+        ForeignKey(
             entity = Account::class,
-            parentColumns = kotlin.arrayOf("id"),
-            childColumns = kotlin.arrayOf("account_id"),
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("account_id"),
             onDelete = CASCADE
         )
     ]
@@ -25,7 +23,7 @@ import androidx.room.ForeignKey.Companion.CASCADE
 
 data class Income(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(name = "tag_id") val tag_id: Int,
+    @ColumnInfo(name = "category_id") val category_id: Int,
     @ColumnInfo(name = "account_id") val account_id: Int,
     @ColumnInfo(name = "amount") val amount: String,
     @ColumnInfo(name = "date") val date: String,
@@ -36,10 +34,10 @@ data class Income(
 data class IncomeWithRelations(
     @Embedded val income: Income,
     @Relation(
-        parentColumn = "tag_id",
+        parentColumn = "category_id",
         entityColumn = "id"
     )
-    val tag: Tag,
+    val category: Category,
     @Relation(
         parentColumn = "account_id",
         entityColumn = "id"
