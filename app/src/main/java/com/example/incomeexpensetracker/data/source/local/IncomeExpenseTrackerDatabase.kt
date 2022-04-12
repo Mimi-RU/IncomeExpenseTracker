@@ -13,4 +13,5 @@ public  abstract class IncomeExpenseTrackerDatabase: RoomDatabase() {
     abstract fun incomeDao():IncomeDao
     abstract fun noteDao():NoteDao
     abstract fun tagDao():TagDao
+    abstract fun scheduleDao():ScheduleDao
 }

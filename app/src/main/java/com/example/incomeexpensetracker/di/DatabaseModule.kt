@@ -46,4 +46,9 @@ object DatabaseModule {
     @Provides
     fun provideTagDao( database: IncomeExpenseTrackerDatabase ) = database.tagDao()
 
+    @Singleton
+    @Provides
+    fun provideScheduleDao( database: IncomeExpenseTrackerDatabase ) = database.scheduleDao()
+
+
 }

@@ -31,6 +31,5 @@ class ExpenseRepository @Inject constructor(private val expenseDao: ExpenseDao) 
 
     suspend fun delete(expense: Expense) {
         expenseDao.deleteExpense(expense)
-        expenseDao.deleteExpense(expense)
     }
 }
