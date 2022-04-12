@@ -133,7 +133,7 @@ fun homeScreen(navHostController: NavHostController) {
                         .padding(8.dp)
                         .fillMaxWidth()
                         .clickable {
-                            navHostController.navigate(nav_routes.expense_list)
+                            navHostController.navigate(nav_routes.schedule_list)
                         }
                 ) {
                     Text(

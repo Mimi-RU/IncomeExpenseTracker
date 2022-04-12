@@ -12,6 +12,7 @@ import com.example.incomeexpensetracker.nav_arguments.category_id
 import com.example.incomeexpensetracker.nav_arguments.expense_id
 import com.example.incomeexpensetracker.nav_arguments.income_id
 import com.example.incomeexpensetracker.nav_arguments.note_id
+import com.example.incomeexpensetracker.nav_arguments.schedule_id
 import com.example.incomeexpensetracker.nav_arguments.tag_id
 import com.example.incomeexpensetracker.ui.account.accountAddScreen
 import com.example.incomeexpensetracker.ui.account.accountEditScreen
@@ -29,6 +30,9 @@ import com.example.incomeexpensetracker.ui.income.incomeListScreen
 import com.example.incomeexpensetracker.ui.note.noteAddScreen
 import com.example.incomeexpensetracker.ui.note.noteEditScreen
 import com.example.incomeexpensetracker.ui.note.noteListScreen
+import com.example.incomeexpensetracker.ui.schedule.scheduleAddScreen
+import com.example.incomeexpensetracker.ui.schedule.scheduleEditScreen
+import com.example.incomeexpensetracker.ui.schedule.scheduleListScreen
 import com.example.incomeexpensetracker.ui.tag.tagAddScreen
 import com.example.incomeexpensetracker.ui.tag.tagEditScreen
 import com.example.incomeexpensetracker.ui.tag.tagListScreen
@@ -133,6 +137,18 @@ private fun IncomeExpenseTrackerApp() {
             tagEditScreen(navHostController = navController, id = tagId)
         }
 
+        composable(route = nav_routes.schedule_list) {
+            scheduleListScreen(navHostController = navController )
+        }
+
+        composable(route = nav_routes.schedule_add) {
+            scheduleAddScreen(navHostController = navController)
+        }
+
+        composable(route = nav_routes.schedule_edit) {
+            val scheduleId = it.arguments!!.getString("schedule_id")!!.toInt()
+            scheduleEditScreen(navHostController = navController, id = scheduleId)
+        }
 
     }
 
@@ -165,6 +181,10 @@ object nav_routes {
     const val tag_list = "tag_list"
     const val tag_add = "tag_add"
     const val tag_edit = "tag_edit/{$tag_id}"
+
+    const val schedule_list = "schedule_list"
+    const val schedule_add = "schedule_add"
+    const val schedule_edit = "schedule_edit/{$schedule_id}"
 }
 
 object nav_arguments {
@@ -174,4 +194,5 @@ object nav_arguments {
     const val category_id = "category_id"
     const val note_id = "note_id"
     const val tag_id = "tag_id"
+    const val schedule_id = "schedule_id"
 }
