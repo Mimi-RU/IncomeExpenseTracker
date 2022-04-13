@@ -82,7 +82,8 @@ fun expenseAddScreen(navHostController: NavHostController) {
                 amount = amount,
                 onAmountChange = {
                     expenseViewModel.amount.value = it
-                }
+                },
+                label = ""
             )
         }
     }

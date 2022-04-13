@@ -6,6 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.MaterialTheme
@@ -26,15 +28,25 @@ fun selectItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp)
+            .height(58.dp)
             .clickable { expanded = true }
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colors.onSurface
+                color = MaterialTheme.colors.onSurface,
+                shape = RoundedCornerShape(8.dp)
             )
     ) {
 
-        item?.let { Text(text = it) }
+        item?.let {
+            Text(
+                text = it,
+                modifier = Modifier
+                    .padding(
+                        start = 12.dp,
+                        top = 5.dp
+                    )
+            )
+        }
 
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
 

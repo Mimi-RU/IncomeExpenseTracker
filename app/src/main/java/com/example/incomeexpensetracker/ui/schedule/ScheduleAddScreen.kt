@@ -98,7 +98,8 @@ fun scheduleAddScreen(navHostController: NavHostController) {
                 amount = amount,
                 onAmountChange = {
                     scheduleViewModel.amount.value = it
-                }
+                },
+                label = ""
             )
 
             // interval_unit

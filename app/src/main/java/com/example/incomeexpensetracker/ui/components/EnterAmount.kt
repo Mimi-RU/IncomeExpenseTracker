@@ -12,13 +12,20 @@ import androidx.compose.ui.text.input.KeyboardType
 @Composable
 fun enterAmount(
     amount: String,
-    onAmountChange: (String) -> Unit
+    onAmountChange: (String) -> Unit,
+    label: String?
 ) {
     OutlinedTextField(
         value = amount,
         onValueChange = { onAmountChange(it) },
         modifier = Modifier.fillMaxWidth(),
-        label = { Text(text = "Enter Amount") },
+        label = {
+            if (label != null) {
+                Text(text = label)
+            } else {
+                Text(text = "Enter Amount")
+            }
+        },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number
         ),

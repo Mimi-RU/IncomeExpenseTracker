@@ -84,7 +84,8 @@ fun incomeAddScreen(navHostController: NavHostController) {
                 amount = amount,
                 onAmountChange = {
                     incomeViewModel.amount.value = it
-                }
+                },
+                label = ""
             )
         }
     }
