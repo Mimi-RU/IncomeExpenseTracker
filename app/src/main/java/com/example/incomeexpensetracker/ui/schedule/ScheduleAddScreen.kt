@@ -62,7 +62,7 @@ fun scheduleAddScreen(navHostController: NavHostController) {
         ) {
 
             // type
-            Text(text = "Payment Type")
+            Text(text = "Schedule For")
             selectItem(
                 item = type,
                 onItemChange = {
@@ -99,7 +99,7 @@ fun scheduleAddScreen(navHostController: NavHostController) {
                 onAmountChange = {
                     scheduleViewModel.amount.value = it
                 },
-                label = ""
+                label = "Enter Amount"
             )
 
             // interval_unit

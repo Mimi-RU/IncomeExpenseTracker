@@ -1,12 +1,10 @@
 package com.example.incomeexpensetracker.ui.expense
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -21,7 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.incomeexpensetracker.data.model.ExpenseWithRelation
+import com.example.incomeexpensetracker.data.model.IncomeWithRelations
 import com.example.incomeexpensetracker.nav_routes
+
 
 @Composable
 fun expenseListScreen(navHostController: NavHostController) {
@@ -43,12 +43,52 @@ fun expenseListScreen(navHostController: NavHostController) {
 
         LazyColumn(contentPadding = PaddingValues(16.dp)) {
             items(expenseList) { item: ExpenseWithRelation ->
-                expenseItem(expense = item)
+                expenseItemContent(expense = item)
             }
         }
 
     }
 
+}
+@Composable
+fun expenseItemContent(expense: ExpenseWithRelation) {
+
+    Row {
+        Card(
+            shape = RoundedCornerShape(8.dp),
+            backgroundColor = Color(0xFFD9D9D9.toInt()),
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+        ) {
+            Column {
+
+                Text(
+                    text = "Category: " + expense.category.name,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(4.dp)
+                )
+
+                Text(
+                    text = "Amount : " + expense.expense.amount,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(4.dp)
+                )
+
+                Text(
+                    text = "Account : " + expense.account.name,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(4.dp)
+                )
+
+                Text(
+                    text = "Date: " + expense.expense.date,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(4.dp)
+                )
+            }
+        }
+    }
 }
 
 @Composable

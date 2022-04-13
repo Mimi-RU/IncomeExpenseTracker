@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -39,12 +41,10 @@ fun scheduleListScreen(navHostController: NavHostController) {
         floatingActionButton = { scheduleListFloatingButton(navHostController = navHostController) }
     ) {
 
-        Column {
-
-            scheduleList.forEach {
-                scheduleItemScreen(it)
+        LazyColumn {
+            items(scheduleList){
+                scheduleItemScreen(item = it)
             }
-
         }
     }
 }
@@ -64,7 +64,7 @@ fun scheduleItemScreen(item: ScheduleWithRelation) {
 
 
                 Text(
-                    text = "Payment Type : " + item.schedule.type,
+                    text = "Schedule For : " + item.schedule.type,
                     style = MaterialTheme.typography.h5,
                     modifier = Modifier.padding(4.dp)
                 )
