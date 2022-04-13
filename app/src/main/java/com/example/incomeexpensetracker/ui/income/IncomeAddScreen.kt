@@ -38,7 +38,7 @@ fun incomeAddScreen(navHostController: NavHostController) {
         categoryViewModel.getAllCategories()
     }
     val categoryStateList = categoryViewModel.allCategories.collectAsState()
-    val categoryList = categoryStateList.value
+    val categoryList = categoryStateList.value.filter { it.type == "Income" }
 
     val account by incomeViewModel.account
     val category by incomeViewModel.category
@@ -85,7 +85,7 @@ fun incomeAddScreen(navHostController: NavHostController) {
                 onAmountChange = {
                     incomeViewModel.amount.value = it
                 },
-                label = ""
+                label = "Enter Amount"
             )
         }
     }

@@ -80,19 +80,17 @@ fun accountItem(account: Account, navHostController: NavHostController) {
         Text(
             text = account.name,
             modifier = Modifier
-                .weight(0.3f)
-                .border(0.2.dp, Color.Black)
-                .padding(4.dp),
+                .weight(0.5f),
             textAlign = TextAlign.Center
 
         )
         Text(
             text = account.balance.toString(),
             modifier = Modifier
-                .weight(0.3f)
-                .border(0.2.dp, Color.Black)
-                .padding(4.dp),
+                .weight(0.5f),
             textAlign = TextAlign.Center
         )
     }
+
+    Divider( modifier = Modifier.padding(4.dp))
 }
