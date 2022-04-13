@@ -5,6 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.MaterialTheme
@@ -15,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.incomeexpensetracker.data.model.Account
 import com.example.incomeexpensetracker.nav_routes
+import kotlin.math.round
 
 @Composable
 fun selectAccount(
@@ -29,15 +32,23 @@ fun selectAccount(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp)
+            .height(58.dp)
             .clickable { expanded = true }
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colors.onSurface
+                color = MaterialTheme.colors.onSurface,
+                shape = RoundedCornerShape(8.dp)
             )
     ) {
 
-        Text(text = account?.name ?: "")
+        Text(
+            text = account?.name ?: "",
+            modifier = Modifier
+                .padding(
+                    start = 12.dp,
+                    top = 5.dp
+                )
+        )
 
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
 

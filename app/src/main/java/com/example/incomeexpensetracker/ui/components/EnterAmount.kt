@@ -21,6 +21,7 @@ fun enterAmount(
         label = { Text(text = "Enter Amount") },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number
-        )
+        ),
+        singleLine = true
     )
 }

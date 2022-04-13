@@ -54,7 +54,8 @@ fun categoryAddFrom(name: String, onNameChange: (String) -> Unit) {
         value = name,
         onValueChange = { onNameChange(it) },
         label = { Text(text = "Enter Name") },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        singleLine = true
     )
 }
 

@@ -59,6 +59,8 @@ fun incomeAddScreen(navHostController: NavHostController) {
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
+            
+            Text(text = "Account")
             selectAccount(
                 account = account,
                 onAccountChange = {
@@ -67,7 +69,8 @@ fun incomeAddScreen(navHostController: NavHostController) {
                 accountList = accountList,
                 navHostController = navHostController
             )
-
+    
+            Text(text = "Category")
             selectCategory(
                 category = category,
                 onCategoryChange = {
