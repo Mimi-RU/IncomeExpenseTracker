@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.incomeexpensetracker.data.model.Account
 import com.example.incomeexpensetracker.nav_routes
+import com.example.incomeexpensetracker.ui.components.backTOHomeTopAppBar
 
 @Composable
 fun accountListScreen(navHostController: NavHostController) {
@@ -41,7 +42,9 @@ fun accountListScreen(navHostController: NavHostController) {
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = { accountsTopBar(navHostController) },
+        topBar = {
+                 backTOHomeTopAppBar(title = "Accounts", navHostController = navHostController )
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 navHostController.navigate(nav_routes.account_add)
@@ -65,25 +68,6 @@ fun accountListScreen(navHostController: NavHostController) {
     }
 
 }
-
-
-@Composable
-fun accountsTopBar(navHostController: NavHostController) {
-    TopAppBar(
-        navigationIcon = {
-            IconButton(onClick = { navHostController.navigate(nav_routes.home) }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back to Home"
-                )
-            }
-        },
-        title = {
-            Text(text = "Accounts")
-        }
-    )
-}
-
 
 @Composable
 fun accountItem(account: Account, navHostController: NavHostController) {
