@@ -8,9 +8,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun topBarScreen(){
-    
-    TopAppBar (
+fun topBarScreen() {
+
+    TopAppBar(
         title = {
             Text(text = "Expense Tracker")
         },
@@ -22,5 +22,5 @@ fun topBarScreen(){
         backgroundColor = MaterialTheme.colors.primaryVariant,
         contentColor = Color.White,
         elevation = 10.dp
-        )
+    )
 }

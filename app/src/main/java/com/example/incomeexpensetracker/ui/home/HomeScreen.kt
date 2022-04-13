@@ -1,6 +1,5 @@
 package com.example.incomeexpensetracker.ui.home
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,6 +9,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -31,41 +31,67 @@ import me.bytebeats.views.charts.simpleChartAnimation
 @Composable
 fun homeScreen(navHostController: NavHostController) {
 
-    val expenseViewModel : ExpenseViewModel = hiltViewModel()
-    val incomeViewModel : IncomeViewModel = hiltViewModel()
+    val homeViewModel: HomeViewModel = hiltViewModel()
+    val expenseViewModel: ExpenseViewModel = hiltViewModel()
+    val incomeViewModel: IncomeViewModel = hiltViewModel()
     val accountViewModel: AccountViewModel = hiltViewModel()
 
+    val selectedTab by homeViewModel.selectedTab
+    val thisMonth by homeViewModel.thisMonth
+    val thisYear by homeViewModel.thisYear
+
+    val chartTitle = if (selectedTab == "Monthly") {
+        "Month: $thisMonth, $thisYear"
+    } else {
+        "Year: $thisYear"
+    }
+
     // << calculate total Expense
-    LaunchedEffect(key1 = true ){
+    LaunchedEffect(key1 = true) {
         expenseViewModel.getAllExpenses()
     }
     val expenseListState = expenseViewModel.flowOfExpenses.collectAsState()
     val expenseList = expenseListState.value
-    val totalExpense = expenseList.map { it.expense.amount.toDouble() }.sumOf { it }
+    val totalExpense = if (selectedTab == "Monthly") {
+        expenseList
+            .filter { it.expense.month == thisMonth && it.expense.year == thisYear }
+            .map { it.expense.amount.toDouble() }
+            .sumOf { it }
+    } else {
+        expenseList
+            .filter { it.expense.year == thisYear }
+            .map { it.expense.amount.toDouble() }
+            .sumOf { it }
+    }
     // calculate total Expense >>
 
-
     // << Calculate Total Income
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = 1) {
         incomeViewModel.getAllIncomesWithRelations()
     }
     val incomeFlow = incomeViewModel.allIncomesWithRelations.asStateFlow()
     val incomeList: List<IncomeWithRelations> = incomeFlow.value
-    val totalIncome = incomeList.map { it.income.amount.toDouble() }.sumOf { it }
+    val totalIncome = if (selectedTab == "Monthly") {
+        incomeList
+            .filter { it.income.month == thisMonth && it.income.year == thisYear }
+            .map { it.income.amount.toDouble() }
+            .sumOf { it }
+    } else {
+        incomeList
+            .filter { it.income.year == thisYear }
+            .map { it.income.amount.toDouble() }
+            .sumOf { it }
+    }
     // Calculate Total Income>>
 
     // << Calculate Account Balance
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = 2) {
         accountViewModel.getAllAccounts()
     }
-
     val accountStateList = accountViewModel.allAccounts.collectAsState()
-
     val accountList = accountStateList.value
     val totalBalance = accountList.map { it.balance.toDouble() }.sumOf { it }
     // Calculate Account  Balance>>
-
-
 
     Scaffold(
         topBar = { topBarScreen() },
@@ -76,7 +102,14 @@ fun homeScreen(navHostController: NavHostController) {
 
         Column {
 
+            // tabs
+            tabRowScreen {
+                homeViewModel.selectedTab.value = it
+            }
+
+            // chart content
             Row {
+
                 pieChartView(
                     totalExpense = totalExpense,
                     totalIncome = totalIncome,
@@ -102,11 +135,15 @@ fun homeScreen(navHostController: NavHostController) {
                         color = Color(0xFF415575.toInt()),
                         modifier = Modifier.padding(5.dp)
                     )
-
+                    Text(
+                        text = chartTitle,
+                        color = Color(0xFF415575.toInt()),
+                        modifier = Modifier.padding(5.dp)
+                    )
                 }
             }
 
-
+            // Incomes
             Row {
                 Card(
                     shape = RoundedCornerShape(8.dp),
@@ -127,6 +164,7 @@ fun homeScreen(navHostController: NavHostController) {
                 }
             }
 
+            // Expenses
             Row {
                 Card(
                     shape = RoundedCornerShape(8.dp),
@@ -147,6 +185,8 @@ fun homeScreen(navHostController: NavHostController) {
                     )
                 }
             }
+
+            // Accounts
             Row {
                 Card(
                     shape = RoundedCornerShape(8.dp),
@@ -166,6 +206,8 @@ fun homeScreen(navHostController: NavHostController) {
                     )
                 }
             }
+
+            // Schedules
             Row {
                 Card(
                     shape = RoundedCornerShape(8.dp),
@@ -185,6 +227,8 @@ fun homeScreen(navHostController: NavHostController) {
                     )
                 }
             }
+
+            // Notes
             Row {
                 Card(
                     shape = RoundedCornerShape(8.dp),
@@ -206,8 +250,8 @@ fun homeScreen(navHostController: NavHostController) {
             }
         }
     }
-
 }
+
 
 @Composable
 fun pieChartView(totalExpense: Double, totalIncome: Double, totalBalance: Double) {
@@ -242,12 +286,11 @@ fun pieChartView(totalExpense: Double, totalIncome: Double, totalBalance: Double
 @Composable
 fun homeFloatingActionButton(navHostController: NavHostController) {
     FloatingActionButton(
-        onClick = { navHostController.navigate(nav_routes.expense_add) },
-        backgroundColor = Color(0xFFC22146.toInt())
+        onClick = { navHostController.navigate(nav_routes.expense_add) }
     ) {
         Icon(
             imageVector = Icons.Default.Add,
-            contentDescription = "Add Account"
+            contentDescription = "Add Expense"
         )
     }
 }
