@@ -92,7 +92,9 @@ fun accountAddTopBar(navHostController: NavHostController, accountViewModel: Acc
 
             IconButton(onClick = {
                 accountViewModel.storeAccount()
-                navHostController.navigate(nav_routes.account_list)
+                val pr = navHostController.previousBackStackEntry?.destination?.route
+                //navHostController.navigate(nav_routes.account_list)
+                navHostController.navigate(pr ?: nav_routes.account_list)
             }) {
                 Icon(imageVector = Icons.Default.Check, contentDescription = "Add Account")
             }

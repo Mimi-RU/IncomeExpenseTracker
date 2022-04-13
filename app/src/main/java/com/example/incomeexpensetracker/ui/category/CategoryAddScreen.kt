@@ -84,7 +84,8 @@ fun categoryAddTopBar(navHostController: NavHostController, categoryViewModel: C
 
             IconButton(onClick = {
                 categoryViewModel.storeCategory()
-                navHostController.navigate(nav_routes.category_list)
+                val pr = navHostController.previousBackStackEntry?.destination?.route
+                navHostController.navigate(pr ?: nav_routes.category_list)
             }) {
                 Icon(
                     imageVector = Icons.Default.Check,
