@@ -1,5 +1,6 @@
 package com.example.incomeexpensetracker.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,6 +8,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -26,9 +29,14 @@ fun homeScreen(navHostController: NavHostController) {
 
     val expenseViewModel : ExpenseViewModel = hiltViewModel()
 
-    expenseViewModel.getTotalExpense()
-    val totalExpense = expenseViewModel.totalExpense
-
+    // << calculate total Expense
+    LaunchedEffect(key1 = true ){
+        expenseViewModel.getAllExpenses()
+    }
+    val expenseListState = expenseViewModel.flowOfExpenses.collectAsState()
+    val expenseList = expenseListState.value
+    val totalExpense = expenseList.map { it.expense.amount.toDouble() }.sumOf { it }
+    // calculate total Expense >>
 
     Scaffold(
         topBar = { topBarScreen() },
@@ -169,12 +177,12 @@ fun homeScreen(navHostController: NavHostController) {
 }
 
 @Composable
-fun pieChartView(totalExpense: Float) {
+fun pieChartView(totalExpense: Double) {
     PieChart(
         pieChartData = PieChartData(
             slices = listOf(
                 PieChartData.Slice(
-                    30F,
+                    totalExpense.toFloat(),
                     Color(0xFFC21336.toInt())
                 ),
                 PieChartData.Slice(

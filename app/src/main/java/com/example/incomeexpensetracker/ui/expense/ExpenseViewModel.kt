@@ -1,6 +1,5 @@
 package com.example.incomeexpensetracker.ui.expense
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -33,14 +32,14 @@ class ExpenseViewModel @Inject constructor(private val expenseRepository: Expens
     val year: MutableState<String> = mutableStateOf("")
 
     // << All Expenses
-    private val _allExpenses = MutableStateFlow<List<ExpenseWithRelation>>(emptyList())
+    private val _flowOfExpenses = MutableStateFlow<List<ExpenseWithRelation>>(emptyList())
 
-    val allExpense = _allExpenses
+    val flowOfExpenses = _flowOfExpenses
 
     fun getAllExpenses() {
         viewModelScope.launch {
-            expenseRepository.allExpense.collect {
-                _allExpenses.value = it
+            expenseRepository.flowOfExpensesWithRelation.collect {
+                _flowOfExpenses.value = it
             }
         }
     }
@@ -80,13 +79,6 @@ class ExpenseViewModel @Inject constructor(private val expenseRepository: Expens
     }
     // Get Expense By Id >>
 
-    private var _totalExpense : Float = 0F;
-    val totalExpense = _totalExpense
-    fun getTotalExpense(){
-       // var text = expenseRepository.getTotalExpense()
-       // Log.d("total_exp", text.toString())
-    }
-
     // << Insert
     private suspend fun insertExpense() {
         viewModelScope.launch { Dispatchers.IO }
@@ -95,8 +87,8 @@ class ExpenseViewModel @Inject constructor(private val expenseRepository: Expens
             id = 0,
             category_id = category.value?.id ?: 0,
             account_id = account.value?.id ?: 0,
-            amount = amount.value ,
-            date = appDateTime.date ,
+            amount = amount.value,
+            date = appDateTime.date,
             month = appDateTime.month,
             year = appDateTime.year
         )
@@ -114,10 +106,10 @@ class ExpenseViewModel @Inject constructor(private val expenseRepository: Expens
         val expense = Expense(
             id = id.value,
             category_id = category_id.value,
-            account_id = account_id.value ,
-            amount = amount.value ,
-            date = date.value ,
-            month = month.value ,
+            account_id = account_id.value,
+            amount = amount.value,
+            date = date.value,
+            month = month.value,
             year = year.value
         )
         expenseRepository.update(expense)
@@ -134,10 +126,10 @@ class ExpenseViewModel @Inject constructor(private val expenseRepository: Expens
         val expense = Expense(
             id = id.value,
             category_id = category_id.value,
-            account_id = account_id.value ,
-            amount = amount.value ,
-            date = date.value ,
-            month = month.value ,
+            account_id = account_id.value,
+            amount = amount.value,
+            date = date.value,
+            month = month.value,
             year = year.value
         )
         expenseRepository.delete(expense)
@@ -147,6 +139,5 @@ class ExpenseViewModel @Inject constructor(private val expenseRepository: Expens
         _deleteExpense()
     }
     // Delete >>
-
 
 }

@@ -31,7 +31,7 @@ fun expenseListScreen(navHostController: NavHostController) {
     LaunchedEffect(key1 = true) {
         expenseViewModel.getAllExpenses()
     }
-    val expenseListState = expenseViewModel.allExpense.collectAsState()
+    val expenseListState = expenseViewModel.flowOfExpenses.collectAsState()
     val expenseList = expenseListState.value
 
     Scaffold(

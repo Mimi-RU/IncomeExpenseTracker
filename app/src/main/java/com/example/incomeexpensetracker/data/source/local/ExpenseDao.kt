@@ -10,13 +10,13 @@ interface ExpenseDao {
 
     @Transaction
     @Query("SELECT * FROM expenses ORDER BY id DESC")
-    fun getExpenses(): Flow<List<ExpenseWithRelation>>
+    fun getFlowOfExpensesWithRelation(): Flow<List<ExpenseWithRelation>>
+
+    @Query("SELECT * FROM expenses ORDER BY id DESC")
+    fun getFlowOfExpenses(): Flow<List<Expense>>
 
     @Query("SELECT * FROM expenses WHERE id = :id")
     fun getExpenseById(id: Int): Flow<Expense>
-
-    @Query("SELECT SUM(amount) as total FROM expenses")
-    fun getTotalExpense() : Float
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExpense(Expense: Expense)

@@ -11,13 +11,12 @@ import javax.inject.Inject
 
 class ExpenseRepository @Inject constructor(private val expenseDao: ExpenseDao) {
 
-    val allExpense: Flow<List<ExpenseWithRelation>> = expenseDao.getExpenses()
+    val flowOfExpensesWithRelation: Flow<List<ExpenseWithRelation>> =
+        expenseDao.getFlowOfExpensesWithRelation()
 
-    fun getTotalExpense() : Float {
-        return expenseDao.getTotalExpense()
-    }
+    val flowOfExpenses: Flow<List<Expense>> = expenseDao.getFlowOfExpenses()
 
-    suspend fun getExpenseById(id: Int) : Flow<Expense> {
+    suspend fun getExpenseById(id: Int): Flow<Expense> {
         return expenseDao.getExpenseById(id)
     }
 
