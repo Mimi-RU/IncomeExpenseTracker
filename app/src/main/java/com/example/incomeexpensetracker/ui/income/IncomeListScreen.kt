@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -39,7 +40,49 @@ fun incomeListScreen(navHostController: NavHostController) {
 
         LazyColumn(contentPadding = PaddingValues(16.dp)) {
             items(incomeList) { item: IncomeWithRelations ->
-                incomeItem(income = item)
+                incomeItemContent(income = item)
+            }
+        }
+    }
+}
+
+
+@Composable
+fun incomeItemContent(income: IncomeWithRelations){
+
+    Row {
+        Card(
+            shape = RoundedCornerShape(8.dp),
+            backgroundColor = Color(0xFFD9D9D9.toInt()),
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+        ) {
+            Column {
+
+                Text(
+                    text = "Category: " + income.category.name,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(4.dp)
+                )
+
+                Text(
+                    text = "Amount : " + income.income.amount,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(4.dp)
+                )
+
+                Text(
+                    text = "Account : " + income.account.name,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(4.dp)
+                )
+
+                Text(
+                    text = "Date: " + income.income.date,
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(4.dp)
+                )
             }
         }
     }

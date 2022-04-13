@@ -101,7 +101,7 @@ class IncomeViewModel @Inject constructor(private val incomeRepository: IncomeRe
             category_id = category.value?.id ?: 0,
             account_id = account.value?.id ?: 0,
             amount = amount.value ,
-            date = date.value ,
+            date = appDateTime.date ,
             month = appDateTime.month ,
             year =  appDateTime.year
         )
