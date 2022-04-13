@@ -103,7 +103,7 @@ fun accountItem(account: Account, navHostController: NavHostController) {
 
         )
         Text(
-            text = account.balance,
+            text = account.balance.toString(),
             modifier = Modifier
                 .weight(0.3f)
                 .border(0.2.dp, Color.Black)

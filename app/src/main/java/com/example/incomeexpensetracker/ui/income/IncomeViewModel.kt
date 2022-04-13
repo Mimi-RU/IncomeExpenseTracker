@@ -8,6 +8,7 @@ import com.example.incomeexpensetracker.data.model.Account
 import com.example.incomeexpensetracker.data.model.Category
 import com.example.incomeexpensetracker.data.model.Income
 import com.example.incomeexpensetracker.data.model.IncomeWithRelations
+import com.example.incomeexpensetracker.data.repository.AccountRepository
 import com.example.incomeexpensetracker.data.repository.IncomeRepository
 import com.example.incomeexpensetracker.utils.AppDateTime
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class IncomeViewModel @Inject constructor(private val incomeRepository: IncomeRepository) :
+class IncomeViewModel @Inject constructor(
+    private val incomeRepository: IncomeRepository,
+    private val accountRepository: AccountRepository
+    ) :
     ViewModel() {
 
     val id: MutableState<Int> = mutableStateOf(0)
@@ -85,6 +89,17 @@ class IncomeViewModel @Inject constructor(private val incomeRepository: IncomeRe
             year =  appDateTime.year
         )
          incomeRepository.insert(income)
+
+        // update account
+        if (account.value != null){
+            val  updatedAccount = Account(
+                id = account.value!!.id,
+                name = account.value!!.name,
+                type = account.value!!.type,
+                balance = account.value!!.balance + amount.value.toDouble()
+            )
+            accountRepository.update(updatedAccount)
+        }
     }
 
     fun storeIncome() = viewModelScope.launch {

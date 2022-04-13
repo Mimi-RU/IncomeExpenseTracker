@@ -90,7 +90,7 @@ fun homeScreen(navHostController: NavHostController) {
     }
     val accountStateList = accountViewModel.allAccounts.collectAsState()
     val accountList = accountStateList.value
-    val totalBalance = accountList.map { it.balance.toDouble() }.sumOf { it }
+    val totalBalance = accountList.map { it.balance }.sumOf { it }
     // Calculate Account  Balance>>
 
     Scaffold(

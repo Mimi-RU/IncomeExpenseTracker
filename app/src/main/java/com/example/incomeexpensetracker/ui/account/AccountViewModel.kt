@@ -54,7 +54,7 @@ class AccountViewModel @Inject constructor(private val accountRepository: Accoun
             id.value = selectedAccount.id
             name.value = selectedAccount.name
             type.value = selectedAccount.type
-            balance.value = selectedAccount.balance
+            balance.value = selectedAccount.balance.toString()
         } else {
             id.value = 0
             name.value = ""
@@ -71,7 +71,7 @@ class AccountViewModel @Inject constructor(private val accountRepository: Accoun
             id = 0,
             name = name.value,
             type = type.value,
-            balance = balance.value
+            balance = balance.value.toDouble()
         )
         accountRepository.insert(account)
     }
@@ -88,7 +88,7 @@ class AccountViewModel @Inject constructor(private val accountRepository: Accoun
             id = id.value,
             name = name.value,
             type = type.value,
-            balance = balance.value
+            balance = balance.value.toDouble()
         )
         accountRepository.update(account)
     }
@@ -105,7 +105,7 @@ class AccountViewModel @Inject constructor(private val accountRepository: Accoun
             id = id.value,
             name = name.value,
             type = type.value,
-            balance = balance.value
+            balance = balance.value.toDouble()
         )
         accountRepository.delete(account)
     }
