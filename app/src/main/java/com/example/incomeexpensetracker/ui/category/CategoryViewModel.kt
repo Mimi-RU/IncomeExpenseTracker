@@ -18,6 +18,7 @@ class CategoryViewModel @Inject constructor(private val categoryRepository: Cate
     ViewModel() {
 
     val id: MutableState<Int> = mutableStateOf(0)
+    val type: MutableState<String> = mutableStateOf("")
     val name: MutableState<String> = mutableStateOf("")
 
     // << All Categories
@@ -63,6 +64,7 @@ class CategoryViewModel @Inject constructor(private val categoryRepository: Cate
         viewModelScope.launch { Dispatchers.IO }
         val category = Category(
             id = 0,
+            type = type.value,
             name = name.value,
         )
         categoryRepository.insert(category)
@@ -78,6 +80,7 @@ class CategoryViewModel @Inject constructor(private val categoryRepository: Cate
         viewModelScope.launch { Dispatchers.IO }
         val category = Category(
             id = id.value,
+            type = type.value,
             name = name.value,
         )
         categoryRepository.update(category)
@@ -102,6 +105,5 @@ class CategoryViewModel @Inject constructor(private val categoryRepository: Cate
         _deleteCategory()
     }
     // Delete >>
-
 
 }

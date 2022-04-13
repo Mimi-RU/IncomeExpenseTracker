@@ -14,6 +14,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.incomeexpensetracker.nav_routes
+import com.example.incomeexpensetracker.ui.components.enterText
+import com.example.incomeexpensetracker.ui.components.selectItem
+import com.example.incomeexpensetracker.utils.CategoryType
 
 @Composable
 fun categoryAddScreen(navHostController: NavHostController) {
@@ -21,6 +24,8 @@ fun categoryAddScreen(navHostController: NavHostController) {
     val categoryViewModel: CategoryViewModel = hiltViewModel()
 
     val name by categoryViewModel.name
+    val type by categoryViewModel.type
+    val listOfTypes = CategoryType.values().map { it.toString() }.toList()
 
     Scaffold(
         topBar = {
@@ -37,9 +42,21 @@ fun categoryAddScreen(navHostController: NavHostController) {
                 .padding(8.dp)
         ) {
 
-            categoryAddFrom(
-                name = name,
-                onNameChange = {
+            // type
+            Text(text = "Type")
+            selectItem(
+                item = type,
+                onItemChange = {
+                    categoryViewModel.type.value = it
+                },
+                itemList = listOfTypes
+            )
+
+            // name
+            enterText(
+                label = "Name",
+                value = name,
+                onValueChange = {
                     categoryViewModel.name.value = it
                 }
             )
@@ -49,19 +66,7 @@ fun categoryAddScreen(navHostController: NavHostController) {
 }
 
 @Composable
-fun categoryAddFrom(name: String, onNameChange: (String) -> Unit) {
-    OutlinedTextField(
-        value = name,
-        onValueChange = { onNameChange(it) },
-        label = { Text(text = "Enter Name") },
-        modifier = Modifier.fillMaxWidth(),
-        singleLine = true
-    )
-}
-
-@Composable
 fun categoryAddTopBar(navHostController: NavHostController, categoryViewModel: CategoryViewModel) {
-
 
     TopAppBar(
         navigationIcon = {
