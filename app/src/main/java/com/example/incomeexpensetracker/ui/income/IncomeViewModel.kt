@@ -8,7 +8,6 @@ import com.example.incomeexpensetracker.data.model.Account
 import com.example.incomeexpensetracker.data.model.Category
 import com.example.incomeexpensetracker.data.model.Income
 import com.example.incomeexpensetracker.data.model.IncomeWithRelations
-import com.example.incomeexpensetracker.data.repository.AccountRepository
 import com.example.incomeexpensetracker.data.repository.IncomeRepository
 import com.example.incomeexpensetracker.utils.AppDateTime
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,17 +19,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class IncomeViewModel @Inject constructor(
-    private val incomeRepository: IncomeRepository,
-    private val accountRepository: AccountRepository
-) :
-    ViewModel() {
+    private val incomeRepository: IncomeRepository
+) : ViewModel() {
 
     val id: MutableState<Int> = mutableStateOf(0)
-    val selectedIncome: MutableState<Income?> = mutableStateOf(null)
+    private val selectedIncome: MutableState<Income?> = mutableStateOf(null)
     val category: MutableState<Category?> = mutableStateOf(null)
     val account: MutableState<Account?> = mutableStateOf(null)
     val amount: MutableState<String> = mutableStateOf("")
-    val date: MutableState<String> = mutableStateOf("")
 
     // << All Incomes
     private val _allIncomes = MutableStateFlow<List<Income>>(emptyList())
