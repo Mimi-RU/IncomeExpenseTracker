@@ -8,6 +8,7 @@ import com.example.incomeexpensetracker.data.model.Account
 import com.example.incomeexpensetracker.data.model.Category
 import com.example.incomeexpensetracker.data.model.Income
 import com.example.incomeexpensetracker.data.model.IncomeWithRelations
+import com.example.incomeexpensetracker.data.repository.AccountRepository
 import com.example.incomeexpensetracker.data.repository.IncomeRepository
 import com.example.incomeexpensetracker.utils.AppDateTime
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class IncomeViewModel @Inject constructor(
-    private val incomeRepository: IncomeRepository
+    private val incomeRepository: IncomeRepository,
+    private val accountRepository: AccountRepository
 ) : ViewModel() {
 
     val id: MutableState<Int> = mutableStateOf(0)
@@ -95,6 +97,17 @@ class IncomeViewModel @Inject constructor(
             year = appDateTime.year
         )
         incomeRepository.insert(income)
+
+        // update account balance
+        if (account.value != null) {
+            val updatedAccount = Account(
+                id = account.value!!.id,
+                name = account.value!!.name,
+                type = account.value!!.type,
+                balance = account.value!!.balance + amount.value.toDouble()
+            )
+            accountRepository.update(updatedAccount)
+        }
     }
 
     fun storeIncome() = viewModelScope.launch {
@@ -116,6 +129,18 @@ class IncomeViewModel @Inject constructor(
                 year = selectedIncome.value!!.year
             )
             incomeRepository.update(income)
+
+            // update account balance
+            val amountDiff = selectedIncome.value!!.amount.toDouble() - amount.value.toDouble()
+            if (account.value != null) {
+                val updatedAccount = Account(
+                    id = account.value!!.id,
+                    name = account.value!!.name,
+                    type = account.value!!.type,
+                    balance = account.value!!.balance - amountDiff
+                )
+                accountRepository.update(updatedAccount)
+            }
         }
     }
 
@@ -138,6 +163,17 @@ class IncomeViewModel @Inject constructor(
                 year = selectedIncome.value!!.year
             )
             incomeRepository.delete(income)
+
+            // update account balance
+            if (account.value != null) {
+                val updatedAccount = Account(
+                    id = account.value!!.id,
+                    name = account.value!!.name,
+                    type = account.value!!.type,
+                    balance = account.value!!.balance - selectedIncome.value!!.amount.toDouble()
+                )
+                accountRepository.update(updatedAccount)
+            }
         }
     }
 

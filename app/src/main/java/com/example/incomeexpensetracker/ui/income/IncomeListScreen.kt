@@ -1,6 +1,5 @@
 package com.example.incomeexpensetracker.ui.income
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -27,7 +25,7 @@ fun incomeListScreen(navHostController: NavHostController) {
 
     val incomeViewModel: IncomeViewModel = hiltViewModel()
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = (0..100).random()) {
         incomeViewModel.getAllIncomesWithRelations()
     }
     val incomeFlow = incomeViewModel.allIncomesWithRelations.asStateFlow()
