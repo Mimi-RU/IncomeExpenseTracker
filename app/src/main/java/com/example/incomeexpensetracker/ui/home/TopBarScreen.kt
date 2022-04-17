@@ -12,7 +12,7 @@ fun topBarScreen() {
 
     TopAppBar(
         title = {
-            Text(text = "Expense Tracker")
+            Text(text = "Income-Expense Tracker")
         },
         navigationIcon = {
             IconButton(onClick = {}) {

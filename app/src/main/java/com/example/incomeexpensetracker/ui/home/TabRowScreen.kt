@@ -11,7 +11,7 @@ fun tabRowScreen(onTabSelect: (String) -> Unit) {
 
     var state by remember { mutableStateOf(0) }
 
-    val titles = listOf("Monthly", "Yearly")
+    val titles = listOf("Daily", "Monthly", "Yearly")
 
     Column {
         TabRow(

@@ -37,55 +37,80 @@ fun homeScreen(navHostController: NavHostController) {
     val accountViewModel: AccountViewModel = hiltViewModel()
 
     val selectedTab by homeViewModel.selectedTab
+    val thisDate by homeViewModel.thisDate
     val thisMonth by homeViewModel.thisMonth
     val thisYear by homeViewModel.thisYear
 
-    val chartTitle = if (selectedTab == "Monthly") {
-        "Month: $thisMonth, $thisYear"
-    } else {
-        "Year: $thisYear"
+    val chartTitle = when (selectedTab) {
+        "Daily" -> {
+            "Date: $thisDate"
+        }
+        "Monthly" -> {
+            "Month: $thisMonth, $thisYear"
+        }
+        else -> {
+            "Year: $thisYear"
+        }
     }
 
     // << calculate total Expense
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = (0..100).random()) {
         expenseViewModel.getAllExpenses()
     }
     val expenseListState = expenseViewModel.flowOfExpenses.collectAsState()
     val expenseList = expenseListState.value
-    val totalExpense = if (selectedTab == "Monthly") {
-        expenseList
-            .filter { it.expense.month == thisMonth && it.expense.year == thisYear }
-            .map { it.expense.amount.toDouble() }
-            .sumOf { it }
-    } else {
-        expenseList
-            .filter { it.expense.year == thisYear }
-            .map { it.expense.amount.toDouble() }
-            .sumOf { it }
+    val totalExpense = when(selectedTab){
+        "Daily" -> {
+            expenseList
+                .filter { it.expense.date == thisDate && it.expense.month == thisMonth && it.expense.year == thisYear }
+                .map { it.expense.amount.toDouble() }
+                .sumOf { it }
+        }
+        "Monthly" -> {
+            expenseList
+                .filter { it.expense.month == thisMonth && it.expense.year == thisYear }
+                .map { it.expense.amount.toDouble() }
+                .sumOf { it }
+        }
+        else -> {
+            expenseList
+                .filter { it.expense.year == thisYear }
+                .map { it.expense.amount.toDouble() }
+                .sumOf { it }
+        }
     }
     // calculate total Expense >>
 
     // << Calculate Total Income
-    LaunchedEffect(key1 = 1) {
+    LaunchedEffect(key1 = (0..100).random()) {
         incomeViewModel.getAllIncomesWithRelations()
     }
     val incomeFlow = incomeViewModel.allIncomesWithRelations.asStateFlow()
     val incomeList: List<IncomeWithRelations> = incomeFlow.value
-    val totalIncome = if (selectedTab == "Monthly") {
-        incomeList
-            .filter { it.income.month == thisMonth && it.income.year == thisYear }
-            .map { it.income.amount.toDouble() }
-            .sumOf { it }
-    } else {
-        incomeList
-            .filter { it.income.year == thisYear }
-            .map { it.income.amount.toDouble() }
-            .sumOf { it }
+    val totalIncome = when(selectedTab) {
+        "Daily" -> {
+            incomeList
+                .filter { it.income.date == thisDate && it.income.month == thisMonth && it.income.year == thisYear }
+                .map { it.income.amount.toDouble() }
+                .sumOf { it }
+        }
+        "Monthly" -> {
+            incomeList
+                .filter { it.income.month == thisMonth && it.income.year == thisYear }
+                .map { it.income.amount.toDouble() }
+                .sumOf { it }
+        }
+        else -> {
+            incomeList
+                .filter { it.income.year == thisYear }
+                .map { it.income.amount.toDouble() }
+                .sumOf { it }
+        }
     }
     // Calculate Total Income>>
 
     // << Calculate Account Balance
-    LaunchedEffect(key1 = 2) {
+    LaunchedEffect(key1 = (0..100).random()) {
         accountViewModel.getAllAccounts()
     }
     val accountStateList = accountViewModel.allAccounts.collectAsState()

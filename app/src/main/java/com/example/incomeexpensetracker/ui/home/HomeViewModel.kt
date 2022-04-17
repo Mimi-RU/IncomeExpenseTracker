@@ -10,7 +10,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor()  : ViewModel() {
     val appDateTime = AppDateTime()
-    val selectedTab : MutableState<String> = mutableStateOf("Monthly")
+    val selectedTab : MutableState<String> = mutableStateOf("Daily")
+    val thisDate : MutableState<String> = mutableStateOf(appDateTime.date)
     val thisMonth : MutableState<String> = mutableStateOf(appDateTime.month)
     val thisYear: MutableState<String> = mutableStateOf(appDateTime.year)
 }
