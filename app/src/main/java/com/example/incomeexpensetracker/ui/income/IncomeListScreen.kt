@@ -1,6 +1,7 @@
 package com.example.incomeexpensetracker.ui.income
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -33,14 +34,14 @@ fun incomeListScreen(navHostController: NavHostController) {
     val incomeList: List<IncomeWithRelations> = incomeFlow.value
 
     Scaffold(
-        topBar = { incomeListtopBar(navHostController) },
+        topBar = { IncomeListTopBar(navHostController) },
 
-        floatingActionButton = { incomeListfloatingActionButton(navHostController) }
+        floatingActionButton = { IncomeListFloatingActionButton(navHostController) }
     ) {
 
         LazyColumn(contentPadding = PaddingValues(16.dp)) {
             items(incomeList) { item: IncomeWithRelations ->
-                incomeItemContent(income = item)
+                incomeItemContent(income = item, navHostController)
             }
         }
     }
@@ -48,9 +49,13 @@ fun incomeListScreen(navHostController: NavHostController) {
 
 
 @Composable
-fun incomeItemContent(income: IncomeWithRelations){
+fun incomeItemContent(income: IncomeWithRelations, navHostController: NavHostController){
 
-    Row {
+    Row(
+        modifier = Modifier.clickable {
+            navHostController.navigate("income_edit/${income.income.id}")
+        }
+    ) {
         Card(
             shape = RoundedCornerShape(8.dp),
             backgroundColor = Color(0xFFD9D9D9.toInt()),
@@ -88,43 +93,8 @@ fun incomeItemContent(income: IncomeWithRelations){
     }
 }
 
-
 @Composable
-fun incomeItem(income: IncomeWithRelations) {
-
-    Row(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text(
-            text = income.category.name,
-            modifier = Modifier
-                .weight(0.3f)
-                .border(0.2.dp, Color.Black)
-                .padding(4.dp),
-            textAlign = TextAlign.Center
-
-        )
-        Text(
-            text = income.account.name,
-            modifier = Modifier
-                .weight(0.3f)
-                .border(0.2.dp, Color.Black)
-                .padding(4.dp),
-            textAlign = TextAlign.Center
-        )
-        Text(
-            text = income.income.amount,
-            modifier = Modifier
-                .weight(0.3f)
-                .border(0.2.dp, Color.Black)
-                .padding(4.dp),
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Composable
-fun incomeListfloatingActionButton(navHostController: NavHostController) {
+fun IncomeListFloatingActionButton(navHostController: NavHostController) {
 
     FloatingActionButton(onClick = { navHostController.navigate(nav_routes.income_add) }) {
 
@@ -137,7 +107,7 @@ fun incomeListfloatingActionButton(navHostController: NavHostController) {
 }
 
 @Composable
-fun incomeListtopBar(navHostController: NavHostController) {
+fun IncomeListTopBar(navHostController: NavHostController) {
     TopAppBar(
         navigationIcon = {
             IconButton(onClick = { navHostController.navigate(nav_routes.home) }) {

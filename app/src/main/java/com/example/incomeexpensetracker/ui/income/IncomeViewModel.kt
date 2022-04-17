@@ -22,20 +22,19 @@ import javax.inject.Inject
 class IncomeViewModel @Inject constructor(
     private val incomeRepository: IncomeRepository,
     private val accountRepository: AccountRepository
-    ) :
+) :
     ViewModel() {
 
     val id: MutableState<Int> = mutableStateOf(0)
-    val category : MutableState<Category?> = mutableStateOf(null)
-    val account : MutableState<Account?> = mutableStateOf(null)
+    val selectedIncome: MutableState<Income?> = mutableStateOf(null)
+    val category: MutableState<Category?> = mutableStateOf(null)
+    val account: MutableState<Account?> = mutableStateOf(null)
     val amount: MutableState<String> = mutableStateOf("")
     val date: MutableState<String> = mutableStateOf("")
 
     // << All Incomes
     private val _allIncomes = MutableStateFlow<List<Income>>(emptyList())
-
     val allIncomes = _allIncomes
-
     fun getAllIncomes() {
         viewModelScope.launch {
             incomeRepository.allIncome.collect {
@@ -45,11 +44,9 @@ class IncomeViewModel @Inject constructor(
     }
     // All Incomes >>
 
-    // << All Incomes
+    // << All Incomes with Relations
     private val _allIncomesWithRelations = MutableStateFlow<List<IncomeWithRelations>>(emptyList())
-
     val allIncomesWithRelations = _allIncomesWithRelations
-
     fun getAllIncomesWithRelations() {
         viewModelScope.launch {
             incomeRepository.allIncomeWithRelations.collect {
@@ -59,16 +56,30 @@ class IncomeViewModel @Inject constructor(
     }
     // All Incomes >>
 
-    //  << Get Income By Id
-    private val _selectedIncome = MutableStateFlow<Income?>(null)
-
-    val selectedIncome = _selectedIncome
-
-    fun getIncomeById(id: Int) {
+    //  << Get Income with relation By Id
+    private val _selectedIncomeWithRelation = MutableStateFlow<IncomeWithRelations?>(null)
+    val selectedIncomeWithRelation = _selectedIncomeWithRelation
+    fun getIncomeByIdWithRelation(id: Int) {
         viewModelScope.launch {
-            incomeRepository.getIncomeById(id).collect { income ->
-                _selectedIncome.value = income
+            incomeRepository.getIncomeByIdWithRelation(id).collect { income ->
+                _selectedIncomeWithRelation.value = income
             }
+        }
+    }
+
+    fun updateIncomeFields(selectedIncomeWithRelation: IncomeWithRelations?) {
+        if (selectedIncomeWithRelation != null) {
+            id.value = selectedIncomeWithRelation.income.id
+            selectedIncome.value = selectedIncomeWithRelation.income
+            category.value = selectedIncomeWithRelation.category
+            account.value = selectedIncomeWithRelation.account
+            amount.value = selectedIncomeWithRelation.income.amount
+        } else {
+            id.value = 0
+            selectedIncome.value = null
+            category.value = null
+            account.value = null
+            amount.value = ""
         }
     }
     // Get Income By Id >>
@@ -78,28 +89,16 @@ class IncomeViewModel @Inject constructor(
         viewModelScope.launch { Dispatchers.IO }
         //date time
         val appDateTime = AppDateTime()
-
         val income = Income(
             id = 0,
             category_id = category.value?.id ?: 0,
             account_id = account.value?.id ?: 0,
-            amount = amount.value ,
-            date = appDateTime.date ,
-            month = appDateTime.month ,
-            year =  appDateTime.year
+            amount = amount.value,
+            date = appDateTime.date,
+            month = appDateTime.month,
+            year = appDateTime.year
         )
-         incomeRepository.insert(income)
-
-        // update account
-        if (account.value != null){
-            val  updatedAccount = Account(
-                id = account.value!!.id,
-                name = account.value!!.name,
-                type = account.value!!.type,
-                balance = account.value!!.balance + amount.value.toDouble()
-            )
-            accountRepository.update(updatedAccount)
-        }
+        incomeRepository.insert(income)
     }
 
     fun storeIncome() = viewModelScope.launch {
@@ -110,17 +109,18 @@ class IncomeViewModel @Inject constructor(
     // << Update
     private suspend fun _updateIncome() {
         viewModelScope.launch { Dispatchers.IO }
-        val appDateTime = AppDateTime()
-        val income = Income(
-            id = id.value,
-            category_id = category.value?.id ?: 0,
-            account_id = account.value?.id ?: 0,
-            amount = amount.value ,
-            date = appDateTime.date ,
-            month = appDateTime.month ,
-            year =  appDateTime.year
-        )
-        incomeRepository.update(income)
+        if (selectedIncome.value !== null) {
+            val income = Income(
+                id = id.value,
+                category_id = category.value?.id ?: 0,
+                account_id = account.value?.id ?: 0,
+                amount = amount.value,
+                date = selectedIncome.value!!.date,
+                month = selectedIncome.value!!.month,
+                year = selectedIncome.value!!.year
+            )
+            incomeRepository.update(income)
+        }
     }
 
     fun updateIncome() = viewModelScope.launch {
@@ -131,17 +131,18 @@ class IncomeViewModel @Inject constructor(
     // << Delete
     private suspend fun _deleteIncome() {
         viewModelScope.launch { Dispatchers.IO }
-        val appDateTime = AppDateTime()
-        val income = Income(
-            id = id.value,
-            category_id = category.value?.id ?: 0,
-            account_id = account.value?.id ?: 0,
-            amount = amount.value ,
-            date = date.value ,
-            month = appDateTime.month ,
-            year =  appDateTime.year
-        )
-        incomeRepository.delete(income)
+        if (selectedIncome.value !== null) {
+            val income = Income(
+                id = id.value,
+                category_id = selectedIncome.value!!.category_id,
+                account_id = selectedIncome.value!!.account_id,
+                amount = selectedIncome.value!!.amount,
+                date = selectedIncome.value!!.date,
+                month = selectedIncome.value!!.month,
+                year = selectedIncome.value!!.year
+            )
+            incomeRepository.delete(income)
+        }
     }
 
     fun deleteIncome() = viewModelScope.launch {

@@ -18,6 +18,10 @@ interface IncomeDao {
     @Query("SELECT * FROM incomes WHERE id = :id")
     fun getIncomeById(id: Int): Flow<Income>
 
+    @Transaction
+    @Query("SELECT * FROM incomes WHERE id = :id")
+    fun getIncomeByIdWithRelation(id: Int): Flow<IncomeWithRelations>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIncome(Income: Income)
 

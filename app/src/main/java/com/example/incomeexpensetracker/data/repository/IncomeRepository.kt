@@ -17,6 +17,9 @@ class IncomeRepository @Inject constructor(private val incomeDao: IncomeDao) {
     suspend fun getIncomeById(id: Int) : Flow<Income> {
         return incomeDao.getIncomeById(id)
     }
+    suspend fun getIncomeByIdWithRelation(id: Int) : Flow<IncomeWithRelations>{
+        return incomeDao.getIncomeByIdWithRelation(id)
+    }
 
     suspend fun insert(income: Income) {
         incomeDao.insertIncome(income)

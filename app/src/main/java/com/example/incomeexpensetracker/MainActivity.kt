@@ -108,6 +108,7 @@ private fun IncomeExpenseTrackerApp() {
             val incomeId = it.arguments!!.getString("income_id")!!.toInt()
             incomeEditScreen(navHostController = navController, id = incomeId)
         }
+
         composable(route = nav_routes.note_list) {
             noteListScreen(navHostController = navController)
         }
