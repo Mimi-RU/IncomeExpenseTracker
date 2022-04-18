@@ -71,11 +71,20 @@ fun noteItem(note: Note, navHostController: NavHostController) {
             .padding(4.dp)
             .clickable { navHostController.navigate("note_edit/${note.id}") }
     ) {
+
+        Text(
+            text = note.date,
+            modifier = Modifier
+                .weight(0.3f),
+            textAlign = TextAlign.Center
+        )
+
         Text(
             text = note.note,
             modifier = Modifier
-                .weight(0.5f),
-            textAlign = TextAlign.Center
+                .weight(0.7f),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.h6
         )
 
     }

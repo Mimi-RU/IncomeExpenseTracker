@@ -9,6 +9,7 @@ import com.example.incomeexpensetracker.data.model.Account
 import com.example.incomeexpensetracker.data.model.Note
 import com.example.incomeexpensetracker.data.repository.AccountRepository
 import com.example.incomeexpensetracker.data.repository.NoteRepository
+import com.example.incomeexpensetracker.utils.AppDateTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -70,11 +71,12 @@ class NoteViewModel @Inject constructor(private val noteRepository: NoteReposito
     // << Insert
     private suspend fun insertNote() {
         viewModelScope.launch { Dispatchers.IO }
+        val appDateTime = AppDateTime()
         val note = Note(
             id = 0,
             note = note.value,
             status = status.value,
-            date = date.value
+            date = appDateTime.date
         )
         noteRepository.insert(note)
     }
