@@ -18,6 +18,10 @@ interface ExpenseDao {
     @Query("SELECT * FROM expenses WHERE id = :id")
     fun getExpenseById(id: Int): Flow<Expense>
 
+    @Transaction
+    @Query("SELECT * FROM expenses WHERE id = :id")
+    fun getExpenseWithRelationById(id: Int): Flow<ExpenseWithRelation>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExpense(Expense: Expense)
 

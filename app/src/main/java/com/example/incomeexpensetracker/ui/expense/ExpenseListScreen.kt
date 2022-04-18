@@ -1,6 +1,7 @@
 package com.example.incomeexpensetracker.ui.expense
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -43,7 +44,7 @@ fun expenseListScreen(navHostController: NavHostController) {
 
         LazyColumn(contentPadding = PaddingValues(16.dp)) {
             items(expenseList) { item: ExpenseWithRelation ->
-                expenseItemContent(expense = item)
+                expenseItemContent(expense = item, navHostController = navHostController)
             }
         }
 
@@ -51,9 +52,13 @@ fun expenseListScreen(navHostController: NavHostController) {
 
 }
 @Composable
-fun expenseItemContent(expense: ExpenseWithRelation) {
+fun expenseItemContent(expense: ExpenseWithRelation, navHostController: NavHostController) {
 
-    Row {
+    Row(
+        modifier = Modifier.clickable {
+            navHostController.navigate("expense_edit/${expense.expense.id}")
+        }
+    ) {
         Card(
             shape = RoundedCornerShape(8.dp),
             backgroundColor = Color(0xFFD9D9D9.toInt()),

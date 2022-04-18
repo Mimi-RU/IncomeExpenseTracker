@@ -20,6 +20,10 @@ class ExpenseRepository @Inject constructor(private val expenseDao: ExpenseDao) 
         return expenseDao.getExpenseById(id)
     }
 
+    suspend fun getExpenseWithRelationById(id: Int): Flow<ExpenseWithRelation> {
+        return expenseDao.getExpenseWithRelationById(id)
+    }
+
     suspend fun insert(expense: Expense) {
         expenseDao.insertExpense(expense)
     }

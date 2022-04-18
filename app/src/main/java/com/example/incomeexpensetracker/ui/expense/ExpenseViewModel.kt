@@ -26,6 +26,7 @@ class ExpenseViewModel @Inject constructor(
     ViewModel() {
 
     val id: MutableState<Int> = mutableStateOf(0)
+    val selectedExpense: MutableState<Expense?> = mutableStateOf(null)
     val category_id: MutableState<Int> = mutableStateOf(0)
     val category: MutableState<Category?> = mutableStateOf(null)
     val account_id: MutableState<Int> = mutableStateOf(0)
@@ -50,35 +51,31 @@ class ExpenseViewModel @Inject constructor(
     // All Expenses >>
 
     //  << Get Expense By Id
-    private val _selectedExpense = MutableStateFlow<Expense?>(null)
+    private val _selectedExpenseWithRelation = MutableStateFlow<ExpenseWithRelation?>(null)
 
-    val selectedExpense = _selectedExpense
+    val selectedExpenseWithRelation = _selectedExpenseWithRelation
 
-    fun getExpenseById(id: Int) {
+    fun getExpenseWithRelationById(id: Int) {
         viewModelScope.launch {
-            expenseRepository.getExpenseById(id).collect { expense ->
-                selectedExpense.value = expense
+            expenseRepository.getExpenseWithRelationById(id).collect { expenseWithRelation ->
+                _selectedExpenseWithRelation.value = expenseWithRelation
             }
         }
     }
 
-    fun updateExpenseFields(selectedExpense: Expense?) {
-        if (selectedExpense != null) {
-            id.value = selectedExpense.id
-            category_id.value = selectedExpense.category_id
-            account_id.value = selectedExpense.account_id
-            amount.value = selectedExpense.amount
-            date.value = selectedExpense.date
-            month.value = selectedExpense.month
-            year.value = selectedExpense.year
+    fun updateExpenseFields(selectedExpenseWithRelation: ExpenseWithRelation) {
+        if (selectedExpenseWithRelation != null) {
+            id.value = selectedExpenseWithRelation.expense.id
+            selectedExpense.value = selectedExpenseWithRelation.expense
+            category.value = selectedExpenseWithRelation.category
+            account.value = selectedExpenseWithRelation.account
+            amount.value = selectedExpenseWithRelation.expense.amount
         } else {
             id.value = 0
-            category_id.value = 0
-            account_id.value = 0
+            selectedExpense.value = null
+            category.value = null
+            account.value = null
             amount.value = ""
-            date.value = ""
-            month.value = ""
-            year.value = ""
         }
     }
     // Get Expense By Id >>
@@ -98,6 +95,7 @@ class ExpenseViewModel @Inject constructor(
         )
         expenseRepository.insert(expense)
 
+        // update account balance
         if (account.value !== null) {
             val updatedAccount = Account(
                 id = account.value!!.id,
@@ -119,14 +117,26 @@ class ExpenseViewModel @Inject constructor(
         viewModelScope.launch { Dispatchers.IO }
         val expense = Expense(
             id = id.value,
-            category_id = category_id.value,
-            account_id = account_id.value,
+            category_id = category.value!!.id,
+            account_id = account.value!!.id,
             amount = amount.value,
-            date = date.value,
-            month = month.value,
-            year = year.value
+            date = selectedExpense.value!!.date,
+            month = selectedExpense.value!!.month,
+            year = selectedExpense.value!!.year
         )
         expenseRepository.update(expense)
+
+        // update account balance
+        if (account.value !== null) {
+            val amountDiff = selectedExpense.value!!.amount.toDouble() - amount.value.toDouble()
+            val updatedAccount = Account(
+                id = account.value!!.id,
+                name = account.value!!.name,
+                type = account.value!!.type,
+                balance = account.value!!.balance + amountDiff
+            )
+            accountRepository.update(updatedAccount)
+        }
     }
 
     fun updateExpense() = viewModelScope.launch {
@@ -147,6 +157,18 @@ class ExpenseViewModel @Inject constructor(
             year = year.value
         )
         expenseRepository.delete(expense)
+
+        // update account balance
+        if (account.value !== null) {
+            val amountDiff = selectedExpense.value!!.amount.toDouble()
+            val updatedAccount = Account(
+                id = account.value!!.id,
+                name = account.value!!.name,
+                type = account.value!!.type,
+                balance = account.value!!.balance + amountDiff
+            )
+            accountRepository.update(updatedAccount)
+        }
     }
 
     fun deleteExpense() = viewModelScope.launch {
