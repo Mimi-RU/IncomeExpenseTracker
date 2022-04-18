@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         notificationBuilder.createNotificationChannel(this)
-        notificationBuilder.showNotification(this)
+        // notificationBuilder.showNotification(this)
         setContent {
             IncomeExpenseTrackerTheme {
                 IncomeExpenseTrackerApp()
