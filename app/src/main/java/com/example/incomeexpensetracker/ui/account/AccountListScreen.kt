@@ -85,7 +85,7 @@ fun accountItem(account: Account, navHostController: NavHostController) {
 
         )
         Text(
-            text = account.balance.toString(),
+            text = account.balance.toString() + " TK",
             modifier = Modifier
                 .weight(0.5f),
             textAlign = TextAlign.Center

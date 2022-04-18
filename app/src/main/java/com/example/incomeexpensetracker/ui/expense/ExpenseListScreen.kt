@@ -75,7 +75,7 @@ fun expenseItemContent(expense: ExpenseWithRelation, navHostController: NavHostC
                 )
 
                 Text(
-                    text = "Amount : " + expense.expense.amount,
+                    text = "Amount : " + expense.expense.amount + " TK",
                     style = MaterialTheme.typography.body1,
                     modifier = Modifier.padding(4.dp)
                 )

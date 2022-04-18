@@ -146,17 +146,17 @@ fun homeScreen(navHostController: NavHostController) {
                 ) {
 
                     Text(
-                        text = "Total Expense : $totalExpense",
+                        text = "Total Expense : $totalExpense TK",
                         color = Color(0xFFC21336.toInt()),
                         modifier = Modifier.padding(5.dp)
                     )
                     Text(
-                        text = "Total Income : $totalIncome",
+                        text = "Total Income : $totalIncome TK",
                         color = Color(0xFF347539.toInt()),
                         modifier = Modifier.padding(5.dp)
                     )
                     Text(
-                        text = "Total Balance : $totalBalance",
+                        text = "Total Balance : $totalBalance TK",
                         color = Color(0xFF415575.toInt()),
                         modifier = Modifier.padding(5.dp)
                     )

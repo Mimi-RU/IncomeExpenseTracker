@@ -70,7 +70,7 @@ fun incomeItemContent(income: IncomeWithRelations, navHostController: NavHostCon
                 )
 
                 Text(
-                    text = "Amount : " + income.income.amount,
+                    text = "Amount : " + income.income.amount + " TK",
                     style = MaterialTheme.typography.body1,
                     modifier = Modifier.padding(4.dp)
                 )
