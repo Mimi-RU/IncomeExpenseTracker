@@ -13,6 +13,7 @@ import com.example.incomeexpensetracker.nav_arguments.expense_id
 import com.example.incomeexpensetracker.nav_arguments.income_id
 import com.example.incomeexpensetracker.nav_arguments.note_id
 import com.example.incomeexpensetracker.nav_arguments.schedule_id
+import com.example.incomeexpensetracker.notification.ScheduleNotificationBuilder
 import com.example.incomeexpensetracker.ui.account.accountAddScreen
 import com.example.incomeexpensetracker.ui.account.accountEditScreen
 import com.example.incomeexpensetracker.ui.account.accountListScreen
@@ -37,13 +38,19 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val notificationBuilder = ScheduleNotificationBuilder()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        notificationBuilder.createNotificationChannel(this)
+        notificationBuilder.showNotification(this)
         setContent {
             IncomeExpenseTrackerTheme {
                 IncomeExpenseTrackerApp()
             }
         }
+
     }
 }
 
