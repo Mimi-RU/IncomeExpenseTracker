@@ -9,7 +9,6 @@ import com.example.incomeexpensetracker.data.model.Category
 import com.example.incomeexpensetracker.data.model.Schedule
 import com.example.incomeexpensetracker.data.model.ScheduleWithRelation
 import com.example.incomeexpensetracker.data.repository.ScheduleRepository
-import com.example.incomeexpensetracker.utils.AppDateTime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,15 +45,26 @@ class ScheduleViewModel @Inject constructor(private val scheduleRepository: Sche
     // All Schedules >>
 
     //  << Get Schedule By Id
-    private val _selectedSchedule = MutableStateFlow<Schedule?>(null)
+    private val _selectedScheduleWithRelation = MutableStateFlow<ScheduleWithRelation?>(null)
 
-    val selectedSchedule = _selectedSchedule
+    val selectedScheduleWithRelation = _selectedScheduleWithRelation
 
-    fun getScheduleById(id: Int) {
+    fun getScheduleWithRelationById(id: Int) {
         viewModelScope.launch {
-            scheduleRepository.getScheduleById(id).collect { schedule ->
-                selectedSchedule.value = schedule
+            scheduleRepository.getScheduleWithRelationById(id).collect { selectedScheduleWithRelation ->
+                _selectedScheduleWithRelation.value = selectedScheduleWithRelation
             }
+        }
+    }
+
+    fun updateScheduleFields(scheduleWithRelation: ScheduleWithRelation?) {
+        if (scheduleWithRelation !== null && id.value == 0) {
+            id.value = scheduleWithRelation.schedule.id
+            type.value = scheduleWithRelation.schedule.type
+            account.value = scheduleWithRelation.account
+            category.value = scheduleWithRelation.category
+            amount.value = scheduleWithRelation.schedule.amount
+            intervalUnit.value = scheduleWithRelation.schedule.interval_unit
         }
     }
     // Get Schedule By Id >>
@@ -62,7 +72,6 @@ class ScheduleViewModel @Inject constructor(private val scheduleRepository: Sche
     // << Insert
     private suspend fun insertSchedule() {
         viewModelScope.launch { Dispatchers.IO }
-        var appDateTime = AppDateTime()
         val schedule = Schedule(
             id = 0,
             type = type.value,
@@ -81,6 +90,51 @@ class ScheduleViewModel @Inject constructor(private val scheduleRepository: Sche
     fun storeSchedule() = viewModelScope.launch {
         insertSchedule()
     }
-    // Insert >>
 
+    // Insert >>
+    // << Update
+    private suspend fun _updateSchedule() {
+        viewModelScope.launch { Dispatchers.IO }
+        if (selectedScheduleWithRelation.value !== null) {
+            val schedule = Schedule(
+                id = id.value,
+                type = type.value,
+                account_id = account.value?.id ?: 0,
+                category_id = category.value?.id ?: 0,
+                amount = amount.value,
+                interval_unit = intervalUnit.value,
+                repeat_want = repeat_want.value,
+                repeat_count = 0
+            )
+            scheduleRepository.update(schedule = schedule)
+        }
+    }
+
+    fun updateSchedule() = viewModelScope.launch {
+        _updateSchedule()
+    }
+    // Update >>
+
+    // << Delete
+    private suspend fun _deleteSchedule() {
+        viewModelScope.launch { Dispatchers.IO }
+        if (selectedScheduleWithRelation.value !== null) {
+            val schedule = Schedule(
+                id = id.value,
+                type = type.value,
+                account_id = account.value?.id ?: 0,
+                category_id = category.value?.id ?: 0,
+                amount = amount.value,
+                interval_unit = intervalUnit.value,
+                repeat_want = repeat_want.value,
+                repeat_count = 0
+            )
+            scheduleRepository.delete(schedule = schedule)
+        }
+    }
+
+    fun deleteSchedule() = viewModelScope.launch {
+        _deleteSchedule()
+    }
+    // Delete >>
 }

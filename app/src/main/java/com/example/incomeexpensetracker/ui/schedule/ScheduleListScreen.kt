@@ -1,5 +1,6 @@
 package com.example.incomeexpensetracker.ui.schedule
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,16 +44,18 @@ fun scheduleListScreen(navHostController: NavHostController) {
 
         LazyColumn {
             items(scheduleList){
-                scheduleItemScreen(item = it)
+                scheduleItemScreen(item = it, navHostController)
             }
         }
     }
 }
 
 @Composable
-fun scheduleItemScreen(item: ScheduleWithRelation) {
+fun scheduleItemScreen(item: ScheduleWithRelation, navHostController: NavHostController) {
 
-    Row {
+    Row( modifier = Modifier.clickable {
+        navHostController.navigate("schedule_edit/${item.schedule.id}")
+    }) {
         Card(
             shape = RoundedCornerShape(8.dp),
             backgroundColor = Color(0xFFBFBFBF.toInt()),

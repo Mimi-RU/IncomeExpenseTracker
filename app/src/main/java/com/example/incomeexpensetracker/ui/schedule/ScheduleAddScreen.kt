@@ -27,6 +27,13 @@ fun scheduleAddScreen(navHostController: NavHostController) {
     val accountViewModel: AccountViewModel = hiltViewModel()
     val categoryViewModel: CategoryViewModel = hiltViewModel()
 
+    val type by scheduleViewModel.type
+    val account by scheduleViewModel.account
+    val category by scheduleViewModel.category
+    val amount by scheduleViewModel.amount
+    val intervalUnit by scheduleViewModel.intervalUnit
+    val types = listOf<String>("Income", "Expense")
+
     // < accounts
     LaunchedEffect(key1 = true) {
         accountViewModel.getAllAccounts()
@@ -41,16 +48,10 @@ fun scheduleAddScreen(navHostController: NavHostController) {
         categoryViewModel.getAllCategories()
     }
     val categoryStateList = categoryViewModel.allCategories.collectAsState()
-    val categoryList = categoryStateList.value
+    val categoryList = categoryStateList.value.filter {
+        it.type == type
+    }
     //category>
-
-
-    val type by scheduleViewModel.type
-    val account by scheduleViewModel.account
-    val category by scheduleViewModel.category
-    val amount by scheduleViewModel.amount
-    val intervalUnit by scheduleViewModel.intervalUnit
-    val types = listOf<String>("Income", "Expense")
 
     Scaffold(
         topBar = { scheduleAddTopBar(navHostController, scheduleViewModel) }

@@ -16,6 +16,10 @@ class ScheduleRepository @Inject constructor(private val scheduleDao: ScheduleDa
         return scheduleDao.getScheduleById(id)
     }
 
+    suspend fun getScheduleWithRelationById(id: Int): Flow<ScheduleWithRelation> {
+        return scheduleDao.getScheduleWithRelationById(id)
+    }
+
     suspend fun insert(schedule: Schedule) {
         scheduleDao.insertSchedule(schedule)
     }
