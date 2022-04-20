@@ -19,23 +19,20 @@ import androidx.navigation.NavHostController
 import com.example.incomeexpensetracker.nav_routes
 import com.example.incomeexpensetracker.ui.account.AccountViewModel
 import com.example.incomeexpensetracker.ui.category.CategoryViewModel
-import com.example.incomeexpensetracker.ui.components.enterAmount
-import com.example.incomeexpensetracker.ui.components.selectAccount
-import com.example.incomeexpensetracker.ui.components.selectCategory
-import com.example.incomeexpensetracker.ui.components.selectItem
+import com.example.incomeexpensetracker.ui.components.*
+import com.example.incomeexpensetracker.utils.AppDateTime
 
 @Composable
-fun scheduleEditScreen(navHostController: NavHostController, id:Int){
+fun scheduleEditScreen(navHostController: NavHostController, id: Int) {
 
     val scheduleViewModel: ScheduleViewModel = hiltViewModel()
     val accountViewModel: AccountViewModel = hiltViewModel()
     val categoryViewModel: CategoryViewModel = hiltViewModel()
 
     // << set values with selected schedule
-    LaunchedEffect(key1 = id ){
+    LaunchedEffect(key1 = id) {
         scheduleViewModel.getScheduleWithRelationById(id = id)
     }
-
 
     val scheduleWithRelation = scheduleViewModel.selectedScheduleWithRelation.value
     scheduleViewModel.updateScheduleFields(scheduleWithRelation = scheduleWithRelation)
@@ -46,9 +43,12 @@ fun scheduleEditScreen(navHostController: NavHostController, id:Int){
     val category by scheduleViewModel.category
     val amount by scheduleViewModel.amount
     val intervalUnit by scheduleViewModel.intervalUnit
-    val types = listOf<String>("Income", "Expense")
+    val notificationHour by scheduleViewModel.notificationHour
+    val notificationDay by scheduleViewModel.notificationDay
+    val notificationDate by scheduleViewModel.notificationDate
+    val notificationMonth by scheduleViewModel.notificationMonth
 
-   // < accounts
+    // < accounts
     LaunchedEffect(key1 = true) {
         accountViewModel.getAllAccounts()
     }
@@ -66,6 +66,7 @@ fun scheduleEditScreen(navHostController: NavHostController, id:Int){
     }
     //category>
 
+    val appDateTime = AppDateTime()
 
     Scaffold(
         topBar = { scheduleEditTopBar(navHostController, scheduleViewModel) }
@@ -77,6 +78,7 @@ fun scheduleEditScreen(navHostController: NavHostController, id:Int){
         ) {
 
             // type
+            val types = listOf<String>("Income", "Expense")
             Text(text = "Schedule For")
             selectItem(
                 item = scheduleFor,
@@ -127,6 +129,58 @@ fun scheduleEditScreen(navHostController: NavHostController, id:Int){
                 },
                 itemList = intervals
             )
+
+
+            // Select Notification Hour
+            val hoursOfDay = appDateTime.hoursOfDay
+            Text(text = "Select Notification Hour")
+            selectIntItem(
+                item = notificationHour,
+                onItemChange = {
+                    scheduleViewModel.notificationHour.value = it
+                },
+                itemList = hoursOfDay
+            )
+
+            // if Weekly
+            if (intervalUnit == "Weekly") {
+                val daysOfWeek = appDateTime.daysOfWeek
+                Text(text = "Day of the Week")
+                selectItem(
+                    item = notificationDay,
+                    onItemChange = {
+                        scheduleViewModel.notificationDay.value = it
+                    },
+                    itemList = daysOfWeek
+                )
+            }
+
+            // if Yearly
+            if (intervalUnit == "Yearly") {
+                val monthsOfYear = appDateTime.monthsOfYear
+                Text(text = "Month of the Year")
+                selectItem(
+                    item = notificationMonth,
+                    onItemChange = {
+                        scheduleViewModel.notificationMonth.value = it
+                    },
+                    itemList = monthsOfYear
+                )
+            }
+
+            // if Monthly || Yearly
+            if (intervalUnit == "Monthly" || intervalUnit == "Yearly") {
+                val datesOfMonth = appDateTime.datesOfMonth
+                Text(text = "Day of the Month")
+                selectIntItem(
+                    item = notificationDate,
+                    onItemChange = {
+                        scheduleViewModel.notificationDate.value = it
+                    },
+                    itemList = datesOfMonth
+                )
+            }
+
         }
     }
 }

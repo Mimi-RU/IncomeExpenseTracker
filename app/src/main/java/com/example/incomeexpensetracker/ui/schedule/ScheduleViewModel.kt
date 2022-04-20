@@ -26,8 +26,10 @@ class ScheduleViewModel @Inject constructor(private val scheduleRepository: Sche
     val category: MutableState<Category?> = mutableStateOf(null)
     val amount: MutableState<String> = mutableStateOf("")
     val intervalUnit: MutableState<String> = mutableStateOf("")
-    val repeat_want: MutableState<Int> = mutableStateOf(0)
-    val time: MutableState<String> = mutableStateOf("")
+    val notificationHour: MutableState<Int?> = mutableStateOf(0)
+    val notificationDay : MutableState<String?> = mutableStateOf("Sat")
+    val notificationDate : MutableState<Int?> = mutableStateOf(1)
+    val notificationMonth : MutableState<String?> = mutableStateOf("Jan")
 
 
     // << All Schedules
@@ -65,6 +67,10 @@ class ScheduleViewModel @Inject constructor(private val scheduleRepository: Sche
             category.value = scheduleWithRelation.category
             amount.value = scheduleWithRelation.schedule.amount
             intervalUnit.value = scheduleWithRelation.schedule.interval_unit
+            notificationHour.value = scheduleWithRelation.schedule.notification_hour
+            notificationDay.value = scheduleWithRelation.schedule.notification_day
+            notificationDate.value = scheduleWithRelation.schedule.notification_date
+            notificationMonth.value = scheduleWithRelation.schedule.notification_month
         }
     }
     // Get Schedule By Id >>
@@ -79,10 +85,10 @@ class ScheduleViewModel @Inject constructor(private val scheduleRepository: Sche
             category_id = category.value?.id ?: 0,
             amount = amount.value,
             interval_unit = intervalUnit.value,
-            schedule_on = "",
-            repeat_want = repeat_want.value,
-            repeat_count = 0,
-            time = time.value
+            notification_hour = notificationHour.value,
+            notification_day = notificationDay.value,
+            notification_date = notificationDate.value,
+            notification_month = notificationMonth.value,
         )
         scheduleRepository.insert(schedule)
     }
@@ -103,8 +109,10 @@ class ScheduleViewModel @Inject constructor(private val scheduleRepository: Sche
                 category_id = category.value?.id ?: 0,
                 amount = amount.value,
                 interval_unit = intervalUnit.value,
-                repeat_want = repeat_want.value,
-                repeat_count = 0
+                notification_hour = notificationHour.value,
+                notification_day = notificationDay.value,
+                notification_date = notificationDate.value,
+                notification_month = notificationMonth.value,
             )
             scheduleRepository.update(schedule = schedule)
         }
@@ -126,8 +134,10 @@ class ScheduleViewModel @Inject constructor(private val scheduleRepository: Sche
                 category_id = category.value?.id ?: 0,
                 amount = amount.value,
                 interval_unit = intervalUnit.value,
-                repeat_want = repeat_want.value,
-                repeat_count = 0
+                notification_hour = notificationHour.value,
+                notification_day = notificationDay.value,
+                notification_date = notificationDate.value,
+                notification_month = notificationMonth.value,
             )
             scheduleRepository.delete(schedule = schedule)
         }

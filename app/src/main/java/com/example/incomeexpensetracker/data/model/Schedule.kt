@@ -28,13 +28,13 @@ data class Schedule(
     @ColumnInfo(name = "category_id") val category_id: Int,
     @ColumnInfo(name = "amount") val amount: String,
     @ColumnInfo(name = "interval_unit") val interval_unit: String,
-    @ColumnInfo(name = "notification_hour") val notification_hour: Int?,
-    @ColumnInfo(name = "notification_day") val notification_day: String?,
-    @ColumnInfo(name = "notification_date") val notification_date: Int?,
-    @ColumnInfo(name = "notification_month") val notification_month:String?,
-    @ColumnInfo(name = "notify_before") val notify_before:Int?,
+    @ColumnInfo(name = "notification_hour") val notification_hour: Int? = 0,
+    @ColumnInfo(name = "notification_day") val notification_day: String? = "Sun",
+    @ColumnInfo(name = "notification_date") val notification_date: Int? = 1,
+    @ColumnInfo(name = "notification_month") val notification_month:String? = "Jan",
+    @ColumnInfo(name = "notify_before") val notify_before:Int? = 1,
     @ColumnInfo(name = "repeat_want") val repeat_want: Int? = 0,
-    @ColumnInfo(name = "repeat_count") val repeat_count: Int = 0,
+    @ColumnInfo(name = "repeat_count") val repeat_count: Int? = 0,
 )
 
 data class ScheduleWithRelation(
