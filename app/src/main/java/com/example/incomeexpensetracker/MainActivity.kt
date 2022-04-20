@@ -7,6 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import com.example.incomeexpensetracker.nav_arguments.account_id
 import com.example.incomeexpensetracker.nav_arguments.category_id
 import com.example.incomeexpensetracker.nav_arguments.expense_id
@@ -34,7 +37,9 @@ import com.example.incomeexpensetracker.ui.schedule.scheduleAddScreen
 import com.example.incomeexpensetracker.ui.schedule.scheduleEditScreen
 import com.example.incomeexpensetracker.ui.schedule.scheduleListScreen
 import com.example.incomeexpensetracker.ui.theme.IncomeExpenseTrackerTheme
+import com.example.incomeexpensetracker.worker.PendingTransactionWorker
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -44,6 +49,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         notificationBuilder.createNotificationChannel(this)
+
+        // WorkManger
+        val notificationWorkRequest: WorkRequest =
+            PeriodicWorkRequestBuilder<PendingTransactionWorker>(1, TimeUnit.HOURS)
+                .build()
+        WorkManager
+            .getInstance(this)
+            .enqueue(notificationWorkRequest)
+
         // notificationBuilder.showNotification(this)
         setContent {
             IncomeExpenseTrackerTheme {
