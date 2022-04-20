@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.example.incomeexpensetracker.data.model.*
 
 @Database(
-    entities = [Account::class, Category::class, Expense::class, Income::class, Note::class, Schedule::class],
+    entities = [Account::class, Category::class, Expense::class, Income::class, Note::class, Schedule::class, PendingTransaction::class ],
     version = 1,
     exportSchema = false
 )
@@ -16,4 +16,5 @@ abstract class IncomeExpenseTrackerDatabase : RoomDatabase() {
     abstract fun incomeDao(): IncomeDao
     abstract fun noteDao(): NoteDao
     abstract fun scheduleDao(): ScheduleDao
+    abstract fun pendingTransactionDao():PendingTransactionDao
 }

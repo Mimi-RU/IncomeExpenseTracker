@@ -11,6 +11,7 @@ import androidx.room.*
             childColumns = arrayOf("account_id"),
             onDelete = ForeignKey.CASCADE
         ),
+
         ForeignKey(
             entity = Category::class,
             parentColumns = arrayOf("id"),
@@ -27,10 +28,13 @@ data class Schedule(
     @ColumnInfo(name = "category_id") val category_id: Int,
     @ColumnInfo(name = "amount") val amount: String,
     @ColumnInfo(name = "interval_unit") val interval_unit: String,
-    @ColumnInfo(name = "schedule_on") val schedule_on: String? = null,
+    @ColumnInfo(name = "notification_hour") val notification_hour: Int?,
+    @ColumnInfo(name = "notification_day") val notification_day: String?,
+    @ColumnInfo(name = "notification_date") val notification_date: Int?,
+    @ColumnInfo(name = "notification_month") val notification_month:String?,
+    @ColumnInfo(name = "notify_before") val notify_before:Int?,
     @ColumnInfo(name = "repeat_want") val repeat_want: Int? = 0,
     @ColumnInfo(name = "repeat_count") val repeat_count: Int = 0,
-    @ColumnInfo(name = "time") val time: String? = null
 )
 
 data class ScheduleWithRelation(
