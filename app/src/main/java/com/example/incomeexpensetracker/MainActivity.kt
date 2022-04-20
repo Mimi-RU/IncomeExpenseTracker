@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import androidx.work.WorkRequest
 import com.example.incomeexpensetracker.nav_arguments.account_id
 import com.example.incomeexpensetracker.nav_arguments.category_id
 import com.example.incomeexpensetracker.nav_arguments.expense_id
@@ -51,12 +51,16 @@ class MainActivity : ComponentActivity() {
         notificationBuilder.createNotificationChannel(this)
 
         // WorkManger
-        val notificationWorkRequest: WorkRequest =
+        val notificationWorkRequest =
             PeriodicWorkRequestBuilder<PendingTransactionWorker>(1, TimeUnit.HOURS)
                 .build()
         WorkManager
             .getInstance(this)
-            .enqueue(notificationWorkRequest)
+            .enqueueUniquePeriodicWork(
+                "scheduled_transaction",
+                ExistingPeriodicWorkPolicy.KEEP,
+                notificationWorkRequest
+            )
 
         // notificationBuilder.showNotification(this)
         setContent {
