@@ -3,17 +3,43 @@ package com.example.incomeexpensetracker.worker
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.hilt.work.HiltWorker
+import androidx.work.CoroutineWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.incomeexpensetracker.MainActivity
 import com.example.incomeexpensetracker.R
+import com.example.incomeexpensetracker.data.model.ScheduleWithRelation
+import com.example.incomeexpensetracker.data.repository.PendingTransactionRepository
+import com.example.incomeexpensetracker.data.repository.ScheduleRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 import kotlin.random.Random
 
-class PendingTransactionWorker(appContext: Context, workerParams: WorkerParameters) :
-    Worker(appContext, workerParams) {
-    override fun doWork(): Result {
+@HiltWorker
+class PendingTransactionWorker @AssistedInject constructor(
+    private val scheduleRepository: ScheduleRepository,
+    private val pendingTransactionRepository: PendingTransactionRepository,
+    @Assisted appContext: Context,
+    @Assisted workerParams: WorkerParameters
+) :
+    CoroutineWorker( appContext, workerParams) {
+
+    override suspend fun doWork(): Result {
+
+        // get all schedules
+        val flowOfSchedules = scheduleRepository.allSchedule
+        var listOfSchedulesWithRelations : List<ScheduleWithRelation> = emptyList()
+         flowOfSchedules.collect{
+             listOfSchedulesWithRelations = it
+        }
+       Log.d("scheduleCount", listOfSchedulesWithRelations.count().toString())
+
 
         // Show Notification (Activity Class will be replaced)
         // prerequisite: Create and register Notification channel with the same channel id first
