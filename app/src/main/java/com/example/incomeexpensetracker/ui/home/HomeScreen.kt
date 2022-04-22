@@ -257,7 +257,7 @@ fun homeScreen(navHostController: NavHostController) {
             Row {
                 Card(
                     shape = RoundedCornerShape(8.dp),
-                    backgroundColor = Color(0xFF4C0088.toInt()),
+                    backgroundColor = Color(0xFF589A8D.toInt()),
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth()
@@ -278,7 +278,7 @@ fun homeScreen(navHostController: NavHostController) {
             Row {
                 Card(
                     shape = RoundedCornerShape(8.dp),
-                    backgroundColor = Color(0xFF589A8D.toInt()),
+                    backgroundColor = Color(0xFFD6D58E.toInt()),
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth()
