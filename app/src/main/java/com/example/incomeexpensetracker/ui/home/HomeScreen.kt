@@ -253,6 +253,27 @@ fun homeScreen(navHostController: NavHostController) {
                 }
             }
 
+            // Budgets
+            Row {
+                Card(
+                    shape = RoundedCornerShape(8.dp),
+                    backgroundColor = Color(0xFF4C0088.toInt()),
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                        .clickable {
+                            navHostController.navigate(nav_routes.budget_list)
+                        }
+                ) {
+                    Text(
+                        text = "Budgets",
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.h5,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+
             // Notes
             Row {
                 Card(

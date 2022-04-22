@@ -7,10 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.example.incomeexpensetracker.nav_arguments.account_id
+import com.example.incomeexpensetracker.nav_arguments.budget_id
 import com.example.incomeexpensetracker.nav_arguments.category_id
 import com.example.incomeexpensetracker.nav_arguments.expense_id
 import com.example.incomeexpensetracker.nav_arguments.income_id
@@ -20,6 +18,9 @@ import com.example.incomeexpensetracker.notification.ScheduleNotificationBuilder
 import com.example.incomeexpensetracker.ui.account.accountAddScreen
 import com.example.incomeexpensetracker.ui.account.accountEditScreen
 import com.example.incomeexpensetracker.ui.account.accountListScreen
+import com.example.incomeexpensetracker.ui.budget.budgetAddScreen
+import com.example.incomeexpensetracker.ui.budget.budgetEditScreen
+import com.example.incomeexpensetracker.ui.budget.budgetListScreen
 import com.example.incomeexpensetracker.ui.category.categoryAddScreen
 import com.example.incomeexpensetracker.ui.category.categoryEditScreen
 import com.example.incomeexpensetracker.ui.category.categoryListScreen
@@ -37,30 +38,28 @@ import com.example.incomeexpensetracker.ui.schedule.scheduleAddScreen
 import com.example.incomeexpensetracker.ui.schedule.scheduleEditScreen
 import com.example.incomeexpensetracker.ui.schedule.scheduleListScreen
 import com.example.incomeexpensetracker.ui.theme.IncomeExpenseTrackerTheme
-import com.example.incomeexpensetracker.worker.PendingTransactionWorker
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val notificationBuilder = ScheduleNotificationBuilder()
+    //private val notificationBuilder = ScheduleNotificationBuilder()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        notificationBuilder.createNotificationChannel(this)
+       // notificationBuilder.createNotificationChannel(this)
 
         // WorkManger
-        val notificationWorkRequest =
-            PeriodicWorkRequestBuilder<PendingTransactionWorker>(1, TimeUnit.HOURS)
-                .build()
-        WorkManager
-            .getInstance(this)
-            .enqueueUniquePeriodicWork(
-                "scheduled_transaction",
-                ExistingPeriodicWorkPolicy.KEEP,
-                notificationWorkRequest
-            )
+//        val notificationWorkRequest =
+//            PeriodicWorkRequestBuilder<PendingTransactionWorker>(1, TimeUnit.HOURS)
+//                .build()
+//        WorkManager
+//            .getInstance(this)
+//            .enqueueUniquePeriodicWork(
+//                "scheduled_transaction",
+//                ExistingPeriodicWorkPolicy.KEEP,
+//                notificationWorkRequest
+//            )
 
         // notificationBuilder.showNotification(this)
         setContent {
@@ -68,7 +67,6 @@ class MainActivity : ComponentActivity() {
                 IncomeExpenseTrackerApp()
             }
         }
-
     }
 }
 
@@ -160,6 +158,19 @@ private fun IncomeExpenseTrackerApp() {
             scheduleEditScreen(navHostController = navController, id = scheduleId)
         }
 
+        composable(route = nav_routes.budget_list) {
+            budgetListScreen(navHostController = navController)
+        }
+
+        composable(route = nav_routes.budget_add) {
+            budgetAddScreen(navHostController = navController)
+        }
+
+        composable(route = nav_routes.budget_edit) {
+            val budgetId = it.arguments!!.getString("budget_id")!!.toInt()
+            budgetEditScreen(navHostController = navController, id = budgetId)
+        }
+
     }
 
 }
@@ -190,6 +201,10 @@ object nav_routes {
     const val schedule_list = "schedule_list"
     const val schedule_add = "schedule_add"
     const val schedule_edit = "schedule_edit/{$schedule_id}"
+
+    const val budget_list = "budget_list"
+    const val budget_add = "budget_add"
+    const val budget_edit = "budget_edit/{$budget_id}"
 }
 
 object nav_arguments {
@@ -199,4 +214,5 @@ object nav_arguments {
     const val category_id = "category_id"
     const val note_id = "note_id"
     const val schedule_id = "schedule_id"
+    const val budget_id = "budget_id"
 }
