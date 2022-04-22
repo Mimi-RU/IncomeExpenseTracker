@@ -21,8 +21,6 @@ class BudgetViewModel @Inject constructor(
 ) : ViewModel() {
 
     val id: MutableState<Int> = mutableStateOf(0)
-    val selectedBudget: MutableState<Budget?> = mutableStateOf(null)
-    val categoryId: MutableState<Int> = mutableStateOf(0)
     val category: MutableState<Category?> = mutableStateOf(null)
     val period: MutableState<String> = mutableStateOf("")
     val amount: MutableState<String> = mutableStateOf("")
@@ -58,15 +56,11 @@ class BudgetViewModel @Inject constructor(
     fun updateBudgetFields(selectedBudgetWithRelation: BudgetWithRelation) {
         if (selectedBudgetWithRelation !== null) {
             id.value = selectedBudgetWithRelation.budget.id
-            selectedBudget.value = selectedBudgetWithRelation.budget
-            categoryId.value = selectedBudgetWithRelation.category.id
             category.value = selectedBudgetWithRelation.category
             period.value = selectedBudgetWithRelation.budget.period
             amount.value = selectedBudgetWithRelation.budget.amount.toString()
         } else {
             id.value = 0
-            selectedBudget.value = null
-            categoryId.value = 0
             category.value = null
             period.value = ""
             amount.value = ""
@@ -80,7 +74,7 @@ class BudgetViewModel @Inject constructor(
         viewModelScope.launch { Dispatchers.IO }
         val budget = Budget(
             id = 0,
-            category_id = categoryId.value,
+            category_id = category.value!!.id,
             period = period.value,
             amount = amount.value.toDouble()
         )
@@ -97,7 +91,7 @@ class BudgetViewModel @Inject constructor(
 
         val budget = Budget(
             id = id.value,
-            category_id = categoryId.value,
+            category_id = category.value!!.id,
             period = period.value,
             amount = amount.value.toDouble()
         )
@@ -112,7 +106,7 @@ class BudgetViewModel @Inject constructor(
         viewModelScope.launch { Dispatchers.IO }
         val budget = Budget(
             id = id.value,
-            category_id = categoryId.value,
+            category_id = category.value!!.id,
             period = period.value,
             amount = amount.value.toDouble()
         )
