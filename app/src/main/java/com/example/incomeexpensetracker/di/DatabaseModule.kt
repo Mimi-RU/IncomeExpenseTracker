@@ -49,4 +49,8 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun pendingTransactionDao(database: IncomeExpenseTrackerDatabase) = database.pendingTransactionDao()
+
+    @Singleton
+    @Provides
+    fun  provideBudgetDao(database: IncomeExpenseTrackerDatabase) = database.budgetDao()
 }

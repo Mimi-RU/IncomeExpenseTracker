@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @ViewModelScoped
-
 class ExpenseRepository @Inject constructor(private val expenseDao: ExpenseDao) {
 
     val flowOfExpensesWithRelation: Flow<List<ExpenseWithRelation>> =
